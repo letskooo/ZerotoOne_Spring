@@ -18,6 +18,14 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+
+application.properties
+/application*.yml
+/application*.properties.enc
+/application*.yml.enc
+/*.properties
+/*.yml
+
 .idea
 *.iws
 *.iml
@@ -35,3 +43,14 @@ out/
 
 ### VS Code ###
 .vscode/
+
+# Log files
+*.log
+logs/
+
+# Environment variables
+.env
+
+# Backup files
+*~
+*.bak
