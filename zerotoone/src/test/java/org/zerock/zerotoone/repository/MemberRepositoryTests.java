@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.zerotoone.domain.Member;
 
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -31,4 +32,16 @@ public class MemberRepositoryTests {
         });
     }
 
+    @Test
+    public void readMembers() {
+
+        String memberId = "member1";
+
+        Optional<Member> result = memberRepository.findById(memberId);
+
+        Member member = result.orElseThrow();
+
+        log.info(member);
+
+    }
 }
