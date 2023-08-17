@@ -16,6 +16,7 @@ public class MemberRepositoryTests {
     @Autowired
     private MemberRepository memberRepository;
 
+    // 멤버 추가 테스트
     @Test
     public void insertMembers() {
 
@@ -32,6 +33,7 @@ public class MemberRepositoryTests {
         });
     }
 
+    // 멤버 조회 테스트
     @Test
     public void readMembers() {
 
@@ -42,6 +44,22 @@ public class MemberRepositoryTests {
         Member member = result.orElseThrow();
 
         log.info(member);
+    }
+
+    // 멤버 업데이트 테스트
+    @Test
+    public void updateMembers(){
+
+        String memberId = "member1";
+
+        Optional<Member> result = memberRepository.findById(memberId);
+
+        Member member = result.orElseThrow();
+
+        member.changePassword("1110");
+        member.changeEmail("member1@test.com");
+
+        memberRepository.save(member);
 
     }
 }
