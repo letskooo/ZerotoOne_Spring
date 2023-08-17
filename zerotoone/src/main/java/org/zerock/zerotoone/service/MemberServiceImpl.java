@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.zerock.zerotoone.domain.Member;
 import org.zerock.zerotoone.dto.MemberJoinDTO;
+import org.zerock.zerotoone.dto.MemberLoginDTO;
 import org.zerock.zerotoone.repository.MemberRepository;
 
 @Service
@@ -25,4 +26,10 @@ public class MemberServiceImpl implements MemberService{
         log.info("member");
         memberRepository.save(member);
     }
+
+    @Override
+    public void login(MemberLoginDTO memberLoginDTO){
+
+    }
+
 }
