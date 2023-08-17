@@ -62,4 +62,13 @@ public class MemberRepositoryTests {
         memberRepository.save(member);
 
     }
+
+    @Test
+    public void deleteMembers() {
+
+        String memberId = "member20";
+
+        memberRepository.deleteById(memberId);
+
+    }
 }
