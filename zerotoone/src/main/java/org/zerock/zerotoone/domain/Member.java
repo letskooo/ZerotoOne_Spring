@@ -11,13 +11,18 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     private String userId;
     private String userPw;
+    private String userEmail;
 
     public void changePw(String userPw){
         this.userPw = userPw;
+    }
+
+    public void changeEmail(String userEmail){
+        this.userEmail = userEmail;
     }
 }
