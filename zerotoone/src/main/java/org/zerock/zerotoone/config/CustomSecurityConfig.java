@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.zerock.zerotoone.security.MemberDetailsService;
 import org.zerock.zerotoone.security.filter.MemberLoginFilter;
+import org.zerock.zerotoone.security.handler.MemberLoginSuccessHandler;
 
 @Configuration
 @Log4j2
@@ -51,6 +52,10 @@ public class CustomSecurityConfig {
         // 로그인 처리 경로 설정. 사용자가 이 경로로 로그인 요청을 보낼 때 실행
         MemberLoginFilter memberLoginFilter = new MemberLoginFilter("/login");
         memberLoginFilter.setAuthenticationManager(authenticationManager);
+
+        // MemberLoginSuccessHandler
+        MemberLoginSuccessHandler memberLoginSuccessHandler = new MemberLoginSuccessHandler();
+        memberLoginFilter.setAuthenticationSuccessHandler(memberLoginSuccessHandler);
 
         // MemberLoginFilter 위치 설정
         http.addFilterBefore(memberLoginFilter, UsernamePasswordAuthenticationFilter.class);
