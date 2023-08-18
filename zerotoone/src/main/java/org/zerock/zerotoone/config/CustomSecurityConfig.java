@@ -17,6 +17,8 @@ public class CustomSecurityConfig {
 
         log.info("---------------configure---------------");
 
+        http.csrf().disable();
+
         return http.build();
 
     }
