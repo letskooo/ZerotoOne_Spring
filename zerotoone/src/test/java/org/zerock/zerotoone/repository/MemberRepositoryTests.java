@@ -27,6 +27,7 @@ public class MemberRepositoryTests {
             Member member = Member.builder()
                     .userId("Member" + i)
                     .userPw(passwordEncoder.encode("111" + i))
+                    .userEmail("email"+i+"@test.com")
                     .build();
             memberRepository.save(member);
         });
