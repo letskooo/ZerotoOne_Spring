@@ -48,6 +48,12 @@ public class JWTUtil {
 
         Map<String, Object> claim = null;
 
+        claim = Jwts.parser()
+                .setSigningKey(key.getBytes())
+                .parseClaimsJws(token)  // 파싱 및 검증, 실패 시 예외
+                .getBody();
+
+
         return claim;
 
     }
