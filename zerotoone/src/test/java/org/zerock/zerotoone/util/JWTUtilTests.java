@@ -36,4 +36,18 @@ public class JWTUtilTests {
 
     }
 
+    @Test
+    public void testAll(){
+
+        String jwtStr = jwtUtil.generateToken(Map.of("username", "member1",
+                "memberEmail", "email1@test.com"), 1);
+
+        log.info(jwtStr);
+
+        Map<String, Object> claim = jwtUtil.validateToken(jwtStr);
+
+        log.info("Username: " + claim.get("username"));
+        log.info("Email: " + claim.get("memberEmail"));
+
+    }
 }
