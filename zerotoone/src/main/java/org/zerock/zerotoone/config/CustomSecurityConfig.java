@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.zerock.zerotoone.Util.JWTUtil;
 import org.zerock.zerotoone.security.MemberDetailsService;
 import org.zerock.zerotoone.security.filter.MemberLoginFilter;
 import org.zerock.zerotoone.security.handler.MemberLoginSuccessHandler;
@@ -28,6 +29,8 @@ import org.zerock.zerotoone.security.handler.MemberLoginSuccessHandler;
 public class CustomSecurityConfig {
 
     private final MemberDetailsService memberDetailsService;
+
+    private final JWTUtil jwtUtil;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,7 +57,7 @@ public class CustomSecurityConfig {
         memberLoginFilter.setAuthenticationManager(authenticationManager);
 
         // MemberLoginSuccessHandler
-        MemberLoginSuccessHandler memberLoginSuccessHandler = new MemberLoginSuccessHandler();
+        MemberLoginSuccessHandler memberLoginSuccessHandler = new MemberLoginSuccessHandler(jwtUtil);
         memberLoginFilter.setAuthenticationSuccessHandler(memberLoginSuccessHandler);
 
         // MemberLoginFilter 위치 설정
