@@ -9,6 +9,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.zerock.zerotoone.Util.JWTUtil;
 import org.zerock.zerotoone.security.exception.AccessTokenException;
 
+import javax.persistence.Access;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +40,12 @@ public class TokenCheckFilter extends OncePerRequestFilter {
         log.info("----------Token Check Filter---------------");
         log.info("JWTUtil: " + jwtUtil);
 
-        filterChain.doFilter(request, response);
+        try {
+            validateAccessToken(request);
+            filterChain.doFilter(request, response);
+        } catch (AccessTokenException accessTokenException){
+            accessTokenException.sendResponseError(response);
+        }
 
     }
 
