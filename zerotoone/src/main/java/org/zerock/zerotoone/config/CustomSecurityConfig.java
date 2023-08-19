@@ -19,6 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.zerock.zerotoone.Util.JWTUtil;
 import org.zerock.zerotoone.security.MemberDetailsService;
 import org.zerock.zerotoone.security.filter.MemberLoginFilter;
+import org.zerock.zerotoone.security.filter.TokenCheckFilter;
 import org.zerock.zerotoone.security.handler.MemberLoginSuccessHandler;
 
 @Configuration
@@ -65,6 +66,12 @@ public class CustomSecurityConfig {
 
         log.info("---------configure-----------");
 
+        // /auth로 시작하는 모든 경로는 TokenCheckFilter가 동작하도록
+        http.addFilterBefore(
+                tokenCheckFilter(jwtUtil),
+                UsernamePasswordAuthenticationFilter.class
+        );
+
         // CSRF 토큰 비활성화
         http.csrf().disable();
         // 세션 생성 안하도록 설정.
@@ -72,4 +79,9 @@ public class CustomSecurityConfig {
         return http.build();
 
     }
+
+    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil){
+        return new TokenCheckFilter(jwtUtil);
+    }
+
 }
