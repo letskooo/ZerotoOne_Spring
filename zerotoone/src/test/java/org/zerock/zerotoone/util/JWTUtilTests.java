@@ -23,4 +23,17 @@ public class JWTUtilTests {
         log.info(jwtStr);
 
     }
+
+    @Test
+    public void testValidate(){
+
+        // 유효 시간이 지난 토큰
+        String jwtStr = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTI0MjU5NDIsImlhdCI6MTY5MjQyNTg4MiwidXNlcm5hbWUiOiJBQkNERSJ9.H_7hvxxh2R3rdnX4WPDIIU4LnmeQoWnY3w7GKGG9NGE";
+
+        Map<String, Object> claim = jwtUtil.validateToken(jwtStr);
+
+        log.info(claim);
+
+    }
+
 }
