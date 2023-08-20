@@ -31,7 +31,9 @@ public class JWTUtil {
         Map<String, Object> payloads = new HashMap<>();
         payloads.putAll(valueMap);
 
-        int time = (1) * days;
+        // 테스트 시에는 짧은 유효기간 : 1분
+        // 실전에는 길게 : 하루
+        int time = (60 * 24) * days;
 
         String jwtStr = Jwts.builder()
                 .setHeader(headers)
