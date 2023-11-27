@@ -17,6 +17,15 @@ public class MemberController {
 
     private final MemberDetailsService memberDetailsService;
 
+    @PostMapping("check")
+    public void checkPOST(MemberLoginDTO memberLoginDTO){
+
+        String username = memberLoginDTO.getUsername();
+        String password = memberLoginDTO.getPassword();
+
+        log.info("username: " + username);
+        log.info("password: " + password);
+    }
 
 
 
