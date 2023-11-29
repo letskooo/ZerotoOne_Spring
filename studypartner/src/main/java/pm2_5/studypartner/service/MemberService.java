@@ -26,9 +26,7 @@ public class MemberService {
                 memberJoinDTO.getUsername(),
                 passwordEncoder.encode(memberJoinDTO.getPassword()),
                 memberJoinDTO.getName(),
-                memberJoinDTO.getEmail(),
-                memberJoinDTO.getSex(),
-                memberJoinDTO.getAge()
+                memberJoinDTO.getEmail()
         );
 
         memberRepository.save(newMember);

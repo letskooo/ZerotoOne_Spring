@@ -24,7 +24,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/checkUsername/{username}")
+    @PostMapping("/{username}")
     public ResponseEntity<String> checkIdPOST(@PathVariable String username){
 
         if (memberService.checkIdDuplicate(username) == "exist"){
@@ -35,7 +35,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("")
     public ResponseEntity<MemberJoinDTO> signUpMember(
             @Valid @RequestBody MemberJoinDTO memberJoinDTO,
             BindingResult result) throws ApiException {
