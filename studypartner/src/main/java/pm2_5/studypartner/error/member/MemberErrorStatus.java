@@ -7,10 +7,10 @@ import lombok.Getter;
 @Getter
 public enum MemberErrorStatus {
 
-    MUSERNAME_EXIST("Duplicate Error", "아이디가 존재합니다!"),
-    VALIDATION_ERROR("VALIDATION_ERROR", "적합하지 않은 입력!");
+    USERNAME_EXIST("Duplicate Error", "아이디가 존재합니다!"),
+    VALIDATION_ERROR("VALIDATION_ERROR", "적합하지 않은 입력!"),
+    MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "회원이 존재하지 않습니다!");
 
     private final String error;
     private final String message;
-
 }

@@ -1,4 +1,4 @@
-package pm2_5.studypartner.dto.auth;
+package pm2_5.studypartner.dto.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -16,7 +16,4 @@ public class MemberJoinDTO {
     @Email
     @NotBlank
     private String email;
-    private int age;
-    private String sex;
-
 }

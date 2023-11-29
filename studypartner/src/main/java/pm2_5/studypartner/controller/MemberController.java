@@ -1,6 +1,5 @@
 package pm2_5.studypartner.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -8,9 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pm2_5.studypartner.dto.auth.MemberJoinDTO;
+import pm2_5.studypartner.dto.member.MemberJoinDTO;
 import pm2_5.studypartner.error.ApiException;
-import pm2_5.studypartner.error.ErrorResponse;
 import pm2_5.studypartner.error.member.MemberErrorStatus;
 import pm2_5.studypartner.service.MemberService;
 
@@ -24,6 +22,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 아이디 중복 체크 메소드
     @PostMapping("/{username}")
     public ResponseEntity<String> checkIdPOST(@PathVariable String username){
 
@@ -35,6 +34,7 @@ public class MemberController {
         }
     }
 
+    // 회원 가입 메소드
     @PostMapping("")
     public ResponseEntity<MemberJoinDTO> signUpMember(
             @Valid @RequestBody MemberJoinDTO memberJoinDTO,
@@ -46,8 +46,7 @@ public class MemberController {
 
             throw new ApiException(MemberErrorStatus.VALIDATION_ERROR, StringUtils.join(messages, ','));
         }
-
-        memberService.joinMember(memberJoinDTO);
+        memberService.addMember(memberJoinDTO);
         return new ResponseEntity<>(memberJoinDTO, HttpStatus.OK);
     }
 }
