@@ -23,5 +23,6 @@ public class Schedule extends BaseEntity {      // 일정
 
     // 테스트 주석2
     private String content;
+    // 테스트 주석3
     private LocalDate date;
 }
