@@ -20,5 +20,5 @@ public class Schedule extends BaseEntity {      // 일정
 
     private String title;
     private String content;
-    private LocalDateTime date;
+    private LocalDate date;
 }
