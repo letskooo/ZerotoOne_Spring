@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DocTransRespDTO {
+    // papago text translation api 응답 DTO
 
     private Message message;
 

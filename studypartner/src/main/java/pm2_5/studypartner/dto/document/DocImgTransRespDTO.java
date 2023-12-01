@@ -10,8 +10,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TranslatedImageDTO {
+public class DocImgTransRespDTO {
 
+    // Papago Image Translation API 응답 DTO
     private Data data;
 
 
