@@ -18,6 +18,7 @@ public class Schedule extends BaseEntity {      // 일정
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 테스트 주석
     private String title;
     private String content;
     private LocalDate date;
