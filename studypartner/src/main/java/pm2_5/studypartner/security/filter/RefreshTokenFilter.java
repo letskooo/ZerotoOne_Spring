@@ -53,10 +53,10 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
             refreshClaims = checkRefreshToken(refreshToken);
             log.info(refreshClaims.toString());
 
-            String username = (String) refreshClaims.get("username");
+            String memberId = (String) refreshClaims.get("memberId");
 
             // 새로운 Access Token 생성
-            String accessTokenValue = jwtUtil.generateToken(Map.of("username", username), 1);
+            String accessTokenValue = jwtUtil.generateToken(Map.of("memberId", String.valueOf(memberId)), 1);
 
             log.info("accessToken: " + accessTokenValue);
 

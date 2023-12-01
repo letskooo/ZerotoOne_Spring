@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import pm2_5.studypartner.domain.Member;
+import pm2_5.studypartner.repository.MemberRepository;
 import pm2_5.studypartner.util.JWTUtil;
 
 import java.awt.*;
@@ -20,6 +22,7 @@ import java.util.Map;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(
@@ -35,7 +38,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info(String.valueOf(authentication));
         log.info(authentication.getName());     // username
 
-        Map<String, Object> claim = Map.of("username", authentication.getName());
+//        Map<String, Object> claim = Map.of("username", authentication.getName());
+
+        Member member = memberRepository.findByUsername(authentication.getName()).get();
+
+
+        Map<String, Object> claim = Map.of("memberId", String.valueOf(member.getId()));
+
+        log.info(String.valueOf(member.getId()));
 
         // Access Token 유효 기간 1일
         String accessToken = jwtUtil.generateToken(claim, 1);

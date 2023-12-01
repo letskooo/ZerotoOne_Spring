@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pm2_5.studypartner.repository.MemberRepository;
 import pm2_5.studypartner.security.CustomUserDetailsService;
 import pm2_5.studypartner.security.filter.LoginFilter;
 import pm2_5.studypartner.security.filter.RefreshTokenFilter;
@@ -31,6 +32,7 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
     private final JWTUtil jwtUtil;
+    private final MemberRepository memberRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder(){
@@ -68,7 +70,7 @@ public class SecurityConfig {
         loginFilter.setAuthenticationManager(authenticationManager);
 
         // LoginSuccessHandler
-        LoginSuccessHandler successHandler = new LoginSuccessHandler(jwtUtil);
+        LoginSuccessHandler successHandler = new LoginSuccessHandler(jwtUtil, memberRepository);
         // SuccessHandler 세팅
         loginFilter.setAuthenticationSuccessHandler(successHandler);
 

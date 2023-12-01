@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pm2_5.studypartner.domain.Member;
 import pm2_5.studypartner.dto.member.MemberDTO;
 import pm2_5.studypartner.dto.member.MemberJoinDTO;
+import pm2_5.studypartner.dto.member.MemberUpdateDTO;
 import pm2_5.studypartner.error.ApiException;
 import pm2_5.studypartner.error.member.MemberErrorStatus;
 import pm2_5.studypartner.repository.MemberRepository;
@@ -22,9 +23,9 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
 
     // 회원 조회 메소드
-    public MemberDTO getMember(String username) throws ApiException {
+    public MemberDTO getMember(Long memberId) throws ApiException {
 
-        Optional<Member> result = memberRepository.findByUsername(username);
+        Optional<Member> result = memberRepository.findById(memberId);
 
         Member findMember = result.orElseThrow(() -> new ApiException(MemberErrorStatus.MEMBER_NOT_FOUND));
 
@@ -45,13 +46,13 @@ public class MemberService {
     }
 
     // 회원 정보 수정 메소드
-    public void modifyMember(MemberDTO memberDTO){
+    public void modifyMember(Long memberId, MemberUpdateDTO memberUpdateDTO){
 
-        Optional<Member> result = memberRepository.findByUsername(memberDTO.getUsername());
+        Optional<Member> result = memberRepository.findById(memberId);
 
         Member findMember = result.orElseThrow(() -> new ApiException(MemberErrorStatus.MEMBER_NOT_FOUND));
 
-        findMember.updateMember(memberDTO.getName(), memberDTO.getEmail());
+        findMember.updateMember(memberUpdateDTO.getName(), memberUpdateDTO.getEmail());
     }
 
 
