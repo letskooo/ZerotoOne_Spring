@@ -1,11 +1,11 @@
-package pm2_5.studypartner.error.member;
+package pm2_5.studypartner.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum MemberErrorStatus {
+public enum MemberErrorStatus {     // 회원 엔티티 예외
 
     USERNAME_EXIST("Duplicate Error", "아이디가 존재합니다!"),
     VALIDATION_ERROR("VALIDATION_ERROR", "적합하지 않은 입력!"),

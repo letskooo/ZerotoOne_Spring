@@ -5,18 +5,20 @@ import lombok.Getter;
 
 @Entity
 @Getter
-public class Document extends BaseEntity {      // 생성 자료
+public class Document extends BaseEntity {      // 생성 문서
 
+    // 문서 식별 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
     private Long id;
 
-
+    // 회원
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 문서 내용
     @Column(columnDefinition = "TEXT")
     private String content;
 }

@@ -13,13 +13,14 @@ import pm2_5.studypartner.error.ErrorResponse;
 @Slf4j
 public class CustomRestAdvice {
 
+    // 예외 처리 핸들러
     @ExceptionHandler(ApiException.class)
     private ResponseEntity<ErrorResponse> handleSignUpError(ApiException e, HttpServletRequest request) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ErrorResponse.builder()
                         .path(request.getServletPath())
-                        .error(e.getStatus().getError())
+                        .error(e.getMemberStatus().getError())
                         .message(e.getMessage())
                         .build());
     }

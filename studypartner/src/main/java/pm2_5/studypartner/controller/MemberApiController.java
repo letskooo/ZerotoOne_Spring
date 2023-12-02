@@ -1,7 +1,6 @@
 package pm2_5.studypartner.controller;
 
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.buf.StringUtils;
@@ -10,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import pm2_5.studypartner.dto.member.MemberDTO;
 import pm2_5.studypartner.dto.member.MemberUpdateDTO;
 import pm2_5.studypartner.error.ApiException;
-import pm2_5.studypartner.error.member.MemberErrorStatus;
+import pm2_5.studypartner.error.MemberErrorStatus;
 import pm2_5.studypartner.service.MemberService;
 
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class MemberApiController {
     @GetMapping("/{memberId}")
     public MemberDTO getMember(@PathVariable Long memberId){
 
-        return memberService.getMember(memberId);
+        return memberService.findMember(memberId);
     }
 
     // 회원 정보 수정 메소드
@@ -36,6 +35,7 @@ public class MemberApiController {
     public void updateMember(@PathVariable Long memberId, @Valid @RequestBody MemberUpdateDTO memberUpdateDTO,
                              BindingResult result){
 
+        // 입력값 검증 처리
         List<String> messages = new ArrayList<>();
         if (result.hasErrors()){
             result.getAllErrors().stream().forEach(objectError -> messages.add(objectError.getDefaultMessage()));
