@@ -21,11 +21,14 @@ public class Document extends BaseEntity {      // 생성 문서
     @JoinColumn(name = "member_id")
     private Member member;
 
+    private String title;
+
     // 문서 내용
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    public Document(Member member, String content) {
+    public Document(String title, Member member, String content) {
+        this.title = title;
         this.member = member;
         this.content = content;
     }

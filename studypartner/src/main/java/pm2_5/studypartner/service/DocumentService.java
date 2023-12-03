@@ -33,7 +33,7 @@ public class DocumentService {
         String translatedText = papagoUtil.translateText(docTextTransReqDTO);
 
         // 번역된 text 기반으로 자료 저장
-        Document document = new Document(findMember, translatedText);
+        Document document = new Document(docTextTransReqDTO.getDocumentTitle(), findMember, translatedText);
         document = documentRepository.save(document);
 
         return document.getId();
@@ -45,7 +45,7 @@ public class DocumentService {
 
         String translated = papagoUtil.translateImg(docImgTransReqDTO);
 
-        Document document = new Document(findMember, translated);
+        Document document = new Document(docImgTransReqDTO.getDocumentTitle(), findMember, translated);
         document =documentRepository.save(document);
 
         return document.getId();
