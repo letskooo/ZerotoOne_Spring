@@ -24,7 +24,7 @@ public class OpenaiUtil {
     @Value("${openai.my_key}")
     private String chatkey;
 
-    public String extractContent(String translatedText) throws JsonProcessingException {
+    public String extractContent(String system, String translatedText) throws JsonProcessingException {
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
@@ -36,16 +36,7 @@ public class OpenaiUtil {
         // chat gpt 동작 지정
         Map<String, Object> message1 = new HashMap<>();
         message1.put("role", "system");
-        message1.put("content", """
-                You need to extract important keywords and descriptions of those keywords based on the material I've given you.
-                I'll give you the steps, and you'll follow them to extract the keywords and descriptions.
-                1. Go through the material I've given you and extract the keywords you think are important.
-                2. generate the descriptions for those keywords from the source material.
-                3. count the number of keywords and let me know key count
-                4. pair those keywords with their descriptions and get back to me only a JSON style response that jackson can parse. I'll give you an example response format in ```.
-                
-                ```{"count" : 2, "keywords" : [{"keyword":"key", "description":"desc"},{"keyword":"key", "description":"desc"}]}```
-                """) ;
+        message1.put("content", system);
         Map<String, Object> message2 = new HashMap<>();
         message2.put("role", "user");
         message2.put("content", translatedText);
