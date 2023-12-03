@@ -30,7 +30,9 @@ public class ContextService {
         String translatedText = findDocument.getContent();
         
         // 역할 설정
-
+        String system = """
+                
+                """;
         
         // chat gpt의 응답을 추출
     }
