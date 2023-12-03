@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class Document extends BaseEntity {      // 생성 자료
+@AllArgsConstructor
+public class Document extends BaseEntity {      // 생성 문서
 
     // 문서 식별 아이디
     @Id
