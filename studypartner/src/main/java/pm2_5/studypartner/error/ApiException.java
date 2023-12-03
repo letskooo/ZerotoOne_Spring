@@ -1,21 +1,31 @@
 package pm2_5.studypartner.error;
 
 import lombok.Getter;
-import pm2_5.studypartner.error.member.MemberErrorStatus;
 
 @Getter
 public class ApiException extends RuntimeException {
 
-    private MemberErrorStatus status;
+    private MemberErrorStatus memberStatus;
+    private ScheduleErrorStatus scheduleErrorStatus;
 
-    public ApiException(MemberErrorStatus status){
+    public ApiException(MemberErrorStatus memberStatus){
 
-        super(status.getMessage());
-        this.status = status;
+        super(memberStatus.getMessage());
+        this.memberStatus = memberStatus;
     }
-    public ApiException(MemberErrorStatus status, String message) {
+    public ApiException(MemberErrorStatus memberStatus, String message) {
 
         super(message);
-        this.status = status;
+        this.memberStatus = memberStatus;
+    }
+
+    public ApiException(ScheduleErrorStatus scheduleErrorStatus) {
+        super(scheduleErrorStatus.getMessage());
+        this.scheduleErrorStatus = scheduleErrorStatus;
+    }
+
+    public ApiException(ScheduleErrorStatus scheduleErrorStatus, String message){
+        super(message);
+        this.scheduleErrorStatus = scheduleErrorStatus;
     }
 }

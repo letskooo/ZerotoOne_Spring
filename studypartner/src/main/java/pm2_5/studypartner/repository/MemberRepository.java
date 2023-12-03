@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
+    // 회원 이름으로 조회
     Optional<Member> findByUsername(@Param("username") String username);
-
 }

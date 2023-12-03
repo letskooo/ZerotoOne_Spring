@@ -38,8 +38,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         log.info(String.valueOf(authentication));
         log.info(authentication.getName());     // username
 
-//        Map<String, Object> claim = Map.of("username", authentication.getName());
-
         Member member = memberRepository.findByUsername(authentication.getName()).get();
 
 

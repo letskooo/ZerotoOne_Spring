@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Document extends BaseEntity {      // 생성 자료
 
+    // 문서 식별 아이디
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "document_id")
@@ -20,6 +21,7 @@ public class Document extends BaseEntity {      // 생성 자료
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 문서 내용
     @Column(columnDefinition = "TEXT")
     private String content;
 
