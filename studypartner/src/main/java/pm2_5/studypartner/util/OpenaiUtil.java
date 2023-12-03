@@ -33,6 +33,7 @@ public class OpenaiUtil {
 
         String apiUrl = "https://api.openai.com/v1/chat/completions";
 
+        // chat gpt 동작 지정
         Map<String, Object> message1 = new HashMap<>();
         message1.put("role", "system");
         message1.put("content", """

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pm2_5.studypartner.domain.Keyword;
+import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.service.KeywordService;
 
 @RestController
@@ -15,8 +16,8 @@ public class KeywordController {
     private final KeywordService keywordService;
 
     @PostMapping("/addKeyword")
-    public void addKeyword(@RequestParam Long documentId) throws JsonProcessingException {
-        keywordService.registerKeyword(documentId);
+    public KeywordsDTO addKeyword(@RequestParam Long documentId) throws JsonProcessingException {
+        return keywordService.registerKeyword(documentId);
     }
 
 }

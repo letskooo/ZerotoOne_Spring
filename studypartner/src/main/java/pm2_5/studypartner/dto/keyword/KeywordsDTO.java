@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import pm2_5.studypartner.domain.Keyword;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
-@ToString
 public class KeywordsDTO {
 
     @JsonProperty("count")
@@ -22,8 +21,6 @@ public class KeywordsDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    @Setter
-    @ToString
     public static class KeywordDTO{
 
         @JsonProperty("keyword")
@@ -32,5 +29,9 @@ public class KeywordsDTO {
         private String description;
     }
 
+    public KeywordsDTO(int count) {
+        this.count = count;
+        this.keywords = new ArrayList<>();
+    }
 
 }

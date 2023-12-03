@@ -25,16 +25,16 @@ public class Keyword extends BaseEntity {   // 키워드 추출
     private String keyword;
 
     // 키워드 설명
-    private String explanation;
+    private String description;
 
     // 중요도 체크
     private boolean checked;
 
-    public Keyword(Document document, String keyword, String explanation)
+    public Keyword(Document document, String keyword, String description)
     {
         this.document = document;
         this.keyword = keyword;
-        this.explanation = explanation;
+        this.description = description;
         this.checked = false;
     }
 }

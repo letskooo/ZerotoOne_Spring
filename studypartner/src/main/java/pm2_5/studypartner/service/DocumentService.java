@@ -26,11 +26,13 @@ public class DocumentService {
     private final PapagoUtil papagoUtil;
 
     public Document registerTransDoc(DocTextTransReqDTO docTextTransReqDTO) {
-
+        
         Member findMember = memberRepository.findById(docTextTransReqDTO.getMemberId()).get();
 
+        // papago에게 text 번역 요청하여 번역된 텍스트 반환
         String translatedText = papagoUtil.translateText(docTextTransReqDTO);
 
+        // 번역된 text 기반으로 자료 저장
         Document document = new Document(findMember, translatedText);
         document = documentRepository.save(document);
 

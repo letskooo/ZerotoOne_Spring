@@ -42,27 +42,37 @@ public class KeywordService {
     public final DocumentRepository documentRepository;
 
     // 키워드 등록
-    public void registerKeyword(Long documentId) throws JsonProcessingException {
-
+    public KeywordsDTO registerKeyword(Long documentId) throws JsonProcessingException {
+        
+        // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
-
         String translateText = findDocument.getContent();
 
+        // chat gpt의 응답을 추출
         String json = openaiUtil.extractContent(translateText);
 
+        // chat gpt의 응답을 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         KeywordsDTO keywordsDTO = objectMapper.readValue(json, KeywordsDTO.class);
 
+        KeywordsDTO newKeywords = new KeywordsDTO(keywordsDTO.getCount());
+
+        // 각 keyword를 확인 및 저장
         for(KeywordsDTO.KeywordDTO keword : keywordsDTO.getKeywords()) {
-            System.out.println(keword.toString());
+            // 키워드와 설명 번역
             DocTextTransReqDTO docTextTransReqDTO = new DocTextTransReqDTO(documentId, "en", "ko", keword.getKeyword());
             String translateKeyword = papagoUtil.translateText(docTextTransReqDTO);
             docTextTransReqDTO.setText(keword.getDescription());
             String translateDesc = papagoUtil.translateText(docTextTransReqDTO);
+            
+            // 키워드 저장
             Keyword newKeyword = new Keyword(findDocument ,keword.getKeyword() + "\n (" + translateKeyword + ")", translateDesc);
-
             keywordRepository.save(newKeyword);
+
+            newKeywords.getKeywords().add(new KeywordsDTO.KeywordDTO(newKeyword.getKeyword(), newKeyword.getDescription()));
         }
+
+        return newKeywords;
 
     }
 
