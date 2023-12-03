@@ -70,15 +70,15 @@ public class KeywordService {
         KeywordsDTO newKeywords = new KeywordsDTO(keywordsDTO.getCount());
 
         // 각 keyword를 확인 및 저장
-        for(KeywordsDTO.KeywordDTO keword : keywordsDTO.getKeywords()) {
+        for(KeywordsDTO.KeywordDTO keyword : keywordsDTO.getKeywords()) {
             // 키워드와 설명 번역
-            DocTextTransReqDTO docTextTransReqDTO = new DocTextTransReqDTO(documentId, "en", "ko", keword.getKeyword());
+            DocTextTransReqDTO docTextTransReqDTO = new DocTextTransReqDTO(documentId, "en", "ko", keyword.getKeyword());
             String translateKeyword = papagoUtil.translateText(docTextTransReqDTO);
-            docTextTransReqDTO.setText(keword.getDescription());
+            docTextTransReqDTO.setText(keyword.getDescription());
             String translateDesc = papagoUtil.translateText(docTextTransReqDTO);
             
             // 키워드 저장
-            Keyword newKeyword = new Keyword(findDocument ,keword.getKeyword() + "\n (" + translateKeyword + ")", translateDesc);
+            Keyword newKeyword = new Keyword(findDocument ,keyword.getKeyword() + "\n (" + translateKeyword + ")", translateDesc);
             keywordRepository.save(newKeyword);
 
             newKeywords.getKeywords().add(new KeywordsDTO.KeywordDTO(newKeyword.getKeyword(), newKeyword.getDescription()));

@@ -35,6 +35,4 @@ public class DocumentController {
         documentMap.put("documentId", documentService.registerImgTransDoc(docImgTransReqDTO));
         return documentMap;
     }
-
-
 }
