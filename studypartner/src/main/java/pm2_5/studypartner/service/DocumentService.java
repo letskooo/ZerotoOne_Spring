@@ -25,7 +25,7 @@ public class DocumentService {
 
     private final PapagoUtil papagoUtil;
 
-    public Document registerTransDoc(DocTextTransReqDTO docTextTransReqDTO) {
+    public Long registerTransDoc(DocTextTransReqDTO docTextTransReqDTO) {
         
         Member findMember = memberRepository.findById(docTextTransReqDTO.getMemberId()).get();
 
@@ -36,11 +36,11 @@ public class DocumentService {
         Document document = new Document(findMember, translatedText);
         document = documentRepository.save(document);
 
-        return document;
+        return document.getId();
     }
 
 
-    public Document registerImgTransDoc(DocImgTransReqDTO docImgTransReqDTO) throws IOException {
+    public Long registerImgTransDoc(DocImgTransReqDTO docImgTransReqDTO) throws IOException {
         Member findMember = memberRepository.findById(docImgTransReqDTO.getMemberId()).get();
 
         String translated = papagoUtil.translateImg(docImgTransReqDTO);
@@ -48,7 +48,7 @@ public class DocumentService {
         Document document = new Document(findMember, translated);
         document =documentRepository.save(document);
 
-        return document;
+        return document.getId();
     }
 
 }

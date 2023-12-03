@@ -9,6 +9,8 @@ import pm2_5.studypartner.dto.document.DocTextTransReqDTO;
 import pm2_5.studypartner.service.DocumentService;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/documents")
@@ -19,15 +21,19 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping("/textTrans")
-    public Document addTransDoc(@ModelAttribute DocTextTransReqDTO docTextTransReqDTO){
+    public Map<String, Long> addTransDoc(@ModelAttribute DocTextTransReqDTO docTextTransReqDTO){
 
-        return documentService.registerTransDoc(docTextTransReqDTO);
+        Map<String, Long> documentMap = new HashMap<>();
+        documentMap.put("documentId", documentService.registerTransDoc(docTextTransReqDTO));
+        return documentMap;
     }
 
     @PostMapping(value = "/imgTrans")
-    public Document addTransImgDoc(@ModelAttribute DocImgTransReqDTO docImgTransReqDTO) throws IOException {
+    public Map<String, Long> addTransImgDoc(@ModelAttribute DocImgTransReqDTO docImgTransReqDTO) throws IOException {
 
-        return documentService.registerImgTransDoc(docImgTransReqDTO);
+        Map<String, Long> documentMap = new HashMap<>();
+        documentMap.put("documentId", documentService.registerImgTransDoc(docImgTransReqDTO));
+        return documentMap;
     }
 
 
