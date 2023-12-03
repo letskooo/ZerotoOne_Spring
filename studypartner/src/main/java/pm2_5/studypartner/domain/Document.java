@@ -1,10 +1,14 @@
 package pm2_5.studypartner.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Document extends BaseEntity {      // 생성 문서
 
     // 문서 식별 아이디
