@@ -48,8 +48,20 @@ public class KeywordService {
         Document findDocument = documentRepository.findById(documentId).get();
         String translateText = findDocument.getContent();
 
+        // 역할 설정
+        String system = """
+                You need to extract important keywords and descriptions of those keywords based on the material I've given you.
+                I'll give you the steps, and you'll follow them to extract the keywords and descriptions.
+                1. Go through the material I've given you and extract the keywords you think are important.
+                2. generate the descriptions for those keywords from the source material.
+                3. count the number of keywords and let me know key count
+                4. pair those keywords with their descriptions and get back to me only a JSON style response that jackson can parse. I'll give you an example response format in ```.
+                
+                ```{"count" : 2, "keywords" : [{"keyword":"key", "description":"desc"},{"keyword":"key", "description":"desc"}]}```
+                """;
+
         // chat gpt의 응답을 추출
-        String json = openaiUtil.extractContent(translateText);
+        String json = openaiUtil.extractContent(system, translateText);
 
         // chat gpt의 응답을 파싱
         ObjectMapper objectMapper = new ObjectMapper();
