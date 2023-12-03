@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 @ToString
 public class DocImgTransReqDTO {
-    String source;
-    String target;
-    MultipartFile image;
+    private Long memberId;
+    private String source;
+    private String target;
+    private MultipartFile image;
 }

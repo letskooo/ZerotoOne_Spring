@@ -7,7 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class DocTransReqDTO {
+public class DocTextTransReqDTO {
+        private Long memberId;
         private String source;
         private String target;
         private String text;
