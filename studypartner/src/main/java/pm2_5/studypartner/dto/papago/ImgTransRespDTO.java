@@ -1,4 +1,4 @@
-package pm2_5.studypartner.dto.document;
+package pm2_5.studypartner.dto.papago;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocImgTransRespDTO {
+public class ImgTransRespDTO {
 
     // Papago Image Translation API 응답 DTO
     private Data data;

@@ -9,12 +9,10 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import pm2_5.studypartner.domain.Document;
-import pm2_5.studypartner.domain.Member;
-import pm2_5.studypartner.dto.document.DocImgTransReqDTO;
-import pm2_5.studypartner.dto.document.DocImgTransRespDTO;
-import pm2_5.studypartner.dto.document.DocTextTransReqDTO;
-import pm2_5.studypartner.dto.document.DocTextTransRespDTO;
+import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
+import pm2_5.studypartner.dto.papago.ImgTransRespDTO;
+import pm2_5.studypartner.dto.papago.TextTransReqDTO;
+import pm2_5.studypartner.dto.papago.TextTransRespDTO;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -28,9 +26,9 @@ public class PapagoUtil {
     @Value("${naver.text.secret.id}")
     private String secretId;
 
-    public String translateText(DocTextTransReqDTO docTextTransReqDTO) {
+    public String translateText(TextTransReqDTO textTransReqDTO) {
 
-        String escapedText = removeEscape(docTextTransReqDTO.getText());
+        String escapedText = removeEscape(textTransReqDTO.getText());
         // 구두점 및 번역에 방해되는 특수문자 제거
 
         // 헤더 설정
@@ -42,7 +40,7 @@ public class PapagoUtil {
 
         // 요청 바디 설정
         String requestBody = String.format("source=%s&target=%s&text=%s",
-                docTextTransReqDTO.getSource(), docTextTransReqDTO.getTarget(), escapedText);
+                textTransReqDTO.getSource(), textTransReqDTO.getTarget(), escapedText);
 
         // 요청 URL
         String apiUrl = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation";
@@ -50,12 +48,12 @@ public class PapagoUtil {
         WebClient webClient = WebClient.create();
 
         // 요청 및 응답
-        DocTextTransRespDTO response = webClient.post()
+        TextTransRespDTO response = webClient.post()
                 .uri(apiUrl)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
                 .body(BodyInserters.fromValue(requestBody))
                 .retrieve()
-                .bodyToMono(DocTextTransRespDTO.class)
+                .bodyToMono(TextTransRespDTO.class)
                 .block();
 
         String translated = response.getMessage().getResult().getTranslatedText();
@@ -63,7 +61,7 @@ public class PapagoUtil {
         return translated;
     }
 
-    public String translateImg(DocImgTransReqDTO docImgTransReqDTO) throws IOException {
+    public String translateImg(ImgTransReqDTO imgTransReqDTO) throws IOException {
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
@@ -80,26 +78,26 @@ public class PapagoUtil {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         // 이미지 파일을 바이트 배열로 변환하여 요청 바디에 추가
-            body.add("image",new ByteArrayResource(docImgTransReqDTO.getImage().getBytes())
+            body.add("image",new ByteArrayResource(imgTransReqDTO.getImage().getBytes())
 
         {
             // 파일 이름이 필요할 시 사용
             @Override
             public String getFilename () {
-            return docImgTransReqDTO.getImage().getOriginalFilename();
+            return imgTransReqDTO.getImage().getOriginalFilename();
         }
         });
 
-            body.add("source",docImgTransReqDTO.getSource());
-            body.add("target",docImgTransReqDTO.getTarget());
+            body.add("source", imgTransReqDTO.getSource());
+            body.add("target", imgTransReqDTO.getTarget());
 
         // 요청 및 응답
-        DocImgTransRespDTO response = webClient.post()
+        ImgTransRespDTO response = webClient.post()
                 .uri(apiUrl)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
                 .body(BodyInserters.fromMultipartData(body))
                 .retrieve()
-                .bodyToMono(DocImgTransRespDTO.class)
+                .bodyToMono(ImgTransRespDTO.class)
                 .block();
 
 

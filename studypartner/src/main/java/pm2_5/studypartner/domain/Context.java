@@ -28,4 +28,12 @@ public class Context extends BaseEntity {   // 문단 요약
 
     // 중요도 체크
     private boolean checked;
+
+    public Context(Document document, String content, String summary)
+    {
+        this.document = document;
+        this.content = content;
+        this.summary = summary;
+        this.checked = false;
+    }
 }

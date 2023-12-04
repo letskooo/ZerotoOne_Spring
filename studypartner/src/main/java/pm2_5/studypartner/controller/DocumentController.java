@@ -3,9 +3,8 @@ package pm2_5.studypartner.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import pm2_5.studypartner.domain.Document;
-import pm2_5.studypartner.dto.document.DocImgTransReqDTO;
-import pm2_5.studypartner.dto.document.DocTextTransReqDTO;
+import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
+import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.service.DocumentService;
 
 import java.io.IOException;
@@ -21,18 +20,18 @@ public class DocumentController {
     private final DocumentService documentService;
 
     @PostMapping("/textTrans")
-    public Map<String, Long> addTransDoc(@ModelAttribute DocTextTransReqDTO docTextTransReqDTO){
+    public Map<String, Long> addTransDoc(@ModelAttribute TextTransReqDTO textTransReqDTO){
 
         Map<String, Long> documentMap = new HashMap<>();
-        documentMap.put("documentId", documentService.registerTransDoc(docTextTransReqDTO));
+        documentMap.put("documentId", documentService.registerTransDoc(textTransReqDTO));
         return documentMap;
     }
 
     @PostMapping(value = "/imgTrans")
-    public Map<String, Long> addTransImgDoc(@ModelAttribute DocImgTransReqDTO docImgTransReqDTO) throws IOException {
+    public Map<String, Long> addTransImgDoc(@ModelAttribute ImgTransReqDTO imgTransReqDTO) throws IOException {
 
         Map<String, Long> documentMap = new HashMap<>();
-        documentMap.put("documentId", documentService.registerImgTransDoc(docImgTransReqDTO));
+        documentMap.put("documentId", documentService.registerImgTransDoc(imgTransReqDTO));
         return documentMap;
     }
 }

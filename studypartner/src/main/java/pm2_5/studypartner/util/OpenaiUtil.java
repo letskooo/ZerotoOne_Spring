@@ -8,9 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import pm2_5.studypartner.domain.Keyword;
-import pm2_5.studypartner.dto.keyword.KeywordsDTO;
-import pm2_5.studypartner.dto.keyword.OpenaiRespDTO;
+import pm2_5.studypartner.dto.openai.OpenaiRespDTO;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -74,14 +72,9 @@ public class OpenaiUtil {
     }
 
     public static String extractJson(String input) {
-        String pattern = "\\{.*\\}";
-        Pattern r = Pattern.compile(pattern);
-        Matcher m = r.matcher(input);
+        //JSON 스타일의 문자열 패턴을 정의합니다.
+        String jsonStr = input.substring(input.indexOf("{"));
 
-        if (m.find()) {
-            return m.group(0);
-        } else {
-            return null; // JSON 부분이 없을 경우 처리 방법을 결정
-        }
+        return jsonStr;
     }
 }
