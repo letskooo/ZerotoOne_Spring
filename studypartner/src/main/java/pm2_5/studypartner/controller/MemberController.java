@@ -24,7 +24,7 @@ public class MemberController {
 
     // 아이디 중복 체크 메소드
     @GetMapping("/{username}")
-    public ResponseEntity<String> checkIdPOST(@PathVariable String username){
+    public ResponseEntity<String> checkIdGET(@PathVariable String username){
 
         if (memberService.checkIdDuplicate(username) == "exist"){
 

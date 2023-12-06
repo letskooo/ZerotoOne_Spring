@@ -32,9 +32,9 @@ public class DocumentService {
 
     private final PapagoUtil papagoUtil;
 
+    // 텍스트 번역 및 저장
     public Long registerTransDoc(TextTransReqDTO textTransReqDTO) {
-
-        System.out.println(textTransReqDTO.getMemberId());
+        
         Member findMember = memberRepository.findById(textTransReqDTO.getMemberId()).get();
 
         // papago에게 text 번역 요청하여 번역된 텍스트 반환
@@ -47,7 +47,7 @@ public class DocumentService {
         return document.getId();
     }
 
-
+    // 이미지 번역 및 저장
     public Long registerImgTransDoc(ImgTransReqDTO imgTransReqDTO) throws IOException {
         Member findMember = memberRepository.findById(imgTransReqDTO.getMemberId()).get();
 
