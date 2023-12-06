@@ -56,10 +56,12 @@ public class OpenaiUtil {
                 .block();
 
         System.out.println(response);
-        ObjectMapper objectMapper = new ObjectMapper();
 
+        // JSON 매핑
+        ObjectMapper objectMapper = new ObjectMapper();
         OpenaiRespDTO openaiRespDTO = objectMapper.readValue(response, OpenaiRespDTO.class);
 
+        // 반환 content 작성
         StringBuilder sb = new StringBuilder();
         for(OpenaiRespDTO.Choice choice : openaiRespDTO.getChoices()) {
             String keywords = choice.getMessage().getContent();

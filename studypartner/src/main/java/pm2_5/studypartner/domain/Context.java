@@ -19,9 +19,6 @@ public class Context extends BaseEntity {   // 문단 요약
     @JoinColumn(name = "document_id")
     private Document document;
 
-    // 문단 순서 번호
-    private int sequence;
-
     // 문단 내용
     @Column(columnDefinition = "TEXT")
     private String content;

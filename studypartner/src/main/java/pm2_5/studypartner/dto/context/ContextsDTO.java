@@ -2,10 +2,7 @@ package pm2_5.studypartner.dto.context;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 
 import java.util.ArrayList;
@@ -14,10 +11,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContextsDTO {
 
+    @JsonProperty("documentId")
+    private Long documentId;
     @JsonProperty("count")
     private int count;
     @JsonProperty("contexts")

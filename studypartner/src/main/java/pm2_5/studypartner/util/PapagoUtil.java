@@ -9,6 +9,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import pm2_5.studypartner.dto.document.TextRespDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.ImgTransRespDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
@@ -40,7 +41,7 @@ public class PapagoUtil {
 
         // 요청 바디 설정
         String requestBody = String.format("source=%s&target=%s&text=%s",
-                textTransReqDTO.getSource(), textTransReqDTO.getTarget(), escapedText);
+                textTransReqDTO.getSource(), textTransReqDTO.getTarget(), textTransReqDTO.getText());
 
         // 요청 URL
         String apiUrl = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation";
@@ -61,7 +62,7 @@ public class PapagoUtil {
         return translated;
     }
 
-    public String translateImg(ImgTransReqDTO imgTransReqDTO) throws IOException {
+    public TextRespDTO translateImg(ImgTransReqDTO imgTransReqDTO) throws IOException {
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
@@ -100,11 +101,12 @@ public class PapagoUtil {
                 .bodyToMono(ImgTransRespDTO.class)
                 .block();
 
+        System.out.println(response.getData().getSourceText());
 
         // 번역된 텍스트 특수문자 제거
         String translated = removeEscape(response.getData().getTargetText());
 
-        return translated;
+        return new TextRespDTO(response.getData().getSourceText(), translated);
     }
 
     public static String removeEscape(String input) {

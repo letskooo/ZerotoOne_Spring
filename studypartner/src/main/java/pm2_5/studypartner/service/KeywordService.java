@@ -15,6 +15,9 @@ import pm2_5.studypartner.repository.KeywordRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
 import pm2_5.studypartner.util.PapagoUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,11 +30,11 @@ public class KeywordService {
     public final DocumentRepository documentRepository;
 
     // 키워드 등록
-    public KeywordsDTO registerKeyword(Long documentId) throws JsonProcessingException {
+    public KeywordsDTO registerKeywords(Long documentId) throws JsonProcessingException {
         
         // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
-        String translatedText = findDocument.getContent();
+        String translatedText = findDocument.getEnContent();
 
         // 역할 설정
         String system = """
@@ -59,7 +62,7 @@ public class KeywordService {
             // 키워드와 설명 번역
             TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getKeyword());
             String translateKeyword = papagoUtil.translateText(textTransReqDTO);
-            textTransReqDTO.setText(keyword.getDescription());
+            textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getDescription());
             String translateDesc = papagoUtil.translateText(textTransReqDTO);
             
             // 키워드 저장
@@ -69,9 +72,34 @@ public class KeywordService {
             newKeywords.getKeywords().add(new KeywordsDTO.KeywordDTO(newKeyword.getKeyword(), newKeyword.getDescription()));
         }
 
+        newKeywords.setDocumentId(documentId);
         return newKeywords;
 
     }
 
+    // 키워드 자료 조회
+    public KeywordsDTO findKeywords(Long documentId){
+
+        List<Keyword> keywords = keywordRepository.findKeywordsByDocumentId(documentId);
+
+        KeywordsDTO keywordsDTO = new KeywordsDTO();
+        List<KeywordsDTO.KeywordDTO> keywordDTOList = new ArrayList<>();
+        int count = 0;
+        for(Keyword keyword : keywords){
+            keywordDTOList.add(new KeywordsDTO.KeywordDTO(keyword.getKeyword(), keyword.getDescription()));
+            count += 1;
+        }
+
+        keywordsDTO.setKeywords(keywordDTOList);
+        keywordsDTO.setCount(count);
+        keywordsDTO.setDocumentId(documentId);
+
+        return keywordsDTO;
+    }
+
+    // 키워드 자료 삭제
+    public void deleteKeywords (Long documentId){
+        keywordRepository.deleteKeywordsByDocumentId(documentId);
+    }
 
 }

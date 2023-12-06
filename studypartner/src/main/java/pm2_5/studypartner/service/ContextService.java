@@ -17,6 +17,9 @@ import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
 import pm2_5.studypartner.util.PapagoUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -32,7 +35,7 @@ public class ContextService {
         
         // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
-        String translatedText = findDocument.getContent();
+        String translatedText = findDocument.getEnContent();
         
         // 역할 설정
         String system = """
@@ -74,7 +77,7 @@ public class ContextService {
             // 키워드와 설명 번역
             TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", context.getContent());
             String translatedContent = papagoUtil.translateText(textTransReqDTO);
-            textTransReqDTO.setText(context.getSummary());
+            textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", context.getSummary());
             String translatedSummary = papagoUtil.translateText(textTransReqDTO);
 
             // 키워드 저장
@@ -83,7 +86,33 @@ public class ContextService {
 
             newContexts.getContexts().add(new ContextsDTO.ContextDTO(newContext.getContent(), newContext.getSummary()));
         }
+        newContexts.setDocumentId(documentId);
 
         return newContexts;
+    }
+
+    // 문단 자료 조회
+    public ContextsDTO findContexts(Long documentId){
+
+        List<Context> contexts = contextRepository.findContextsByDocumentId(documentId);
+
+        ContextsDTO contextsDTO = new ContextsDTO();
+        List<ContextsDTO.ContextDTO> contextDTOList = new ArrayList<>();
+        int count = 0;
+        for(Context context : contexts){
+            contextDTOList.add(new ContextsDTO.ContextDTO(context.getContent(), context.getSummary()));
+            count += 1;
+        }
+
+        contextsDTO.setContexts(contextDTOList);
+        contextsDTO.setCount(count);
+        contextsDTO.setDocumentId(documentId);
+
+        return contextsDTO;
+    }
+
+    // 키워드 자료 삭제
+    public void deleteContexts (Long documentId){
+        contextRepository.deleteContextsByDocumentId(documentId);
     }
 }
