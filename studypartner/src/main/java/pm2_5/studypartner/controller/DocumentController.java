@@ -7,6 +7,7 @@ import pm2_5.studypartner.dto.document.DocumentDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.service.DocumentService;
+import pm2_5.studypartner.service.MemberService;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,7 +19,15 @@ import java.util.Map;
 @Slf4j
 public class DocumentController {
 
+    private final MemberService memberService;
     private final DocumentService documentService;
+
+    // 회원 인증
+    @GetMapping("/auth/{memberId}")
+    public void authMember(@PathVariable Long memberId){
+
+        memberService.findMember(memberId);
+    }
 
     // 텍스트를 이용하여 문서 생성
     @PostMapping("/text")
