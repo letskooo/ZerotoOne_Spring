@@ -9,7 +9,7 @@ public class Written extends BaseEntity {      // 주관식 문제
 
     // 주관식 식별 아이디
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "writted_id")
+    @Column(name = "written_id")
     private Long id;
 
     // 문서

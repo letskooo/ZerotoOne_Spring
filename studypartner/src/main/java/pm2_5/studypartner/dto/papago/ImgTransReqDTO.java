@@ -1,6 +1,5 @@
-package pm2_5.studypartner.dto.document;
+package pm2_5.studypartner.dto.papago;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class DocImgTransReqDTO {
+public class ImgTransReqDTO {
     private String documentTitle;
     private Long memberId;
     private String source;

@@ -1,4 +1,4 @@
-package pm2_5.studypartner.dto.keyword;
+package pm2_5.studypartner.dto.openai;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

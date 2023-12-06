@@ -1,4 +1,4 @@
-package pm2_5.studypartner.dto.document;
+package pm2_5.studypartner.dto.papago;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DocTextTransRespDTO {
+public class TextTransRespDTO {
     // papago text translation api 응답 DTO
 
     private Message message;

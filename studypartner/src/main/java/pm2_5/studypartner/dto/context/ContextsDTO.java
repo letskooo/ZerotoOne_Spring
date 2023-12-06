@@ -1,10 +1,9 @@
-package pm2_5.studypartner.dto.keyword;
+package pm2_5.studypartner.dto.context;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import pm2_5.studypartner.domain.Keyword;
+import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,31 +12,31 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KeywordsDTO {
+public class ContextsDTO {
 
     @JsonProperty("documentId")
     private Long documentId;
     @JsonProperty("count")
     private int count;
-    @JsonProperty("keywords")
-    private List<KeywordDTO> keywords;
-
+    @JsonProperty("contexts")
+    private List<ContextDTO> contexts;
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class KeywordDTO{
+    public static class ContextDTO{
 
-        @JsonProperty("keyword")
-        private String keyword;
-        @JsonProperty("description")
-        private String description;
+        @JsonProperty("content")
+        private String content;
+        @JsonProperty("summary")
+        private String summary;
     }
 
-    public KeywordsDTO(int count) {
+    public ContextsDTO(int count) {
         this.count = count;
-        this.keywords = new ArrayList<>();
+        this.contexts = new ArrayList<>();
     }
 
 }

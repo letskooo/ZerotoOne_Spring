@@ -3,6 +3,8 @@ package pm2_5.studypartner.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.List;
+
 @Entity
 @Getter
 public class Multiple extends BaseEntity {      // 객관식 문제
@@ -25,4 +27,7 @@ public class Multiple extends BaseEntity {      // 객관식 문제
 
     // 중요도 체크
     private boolean checked;
+
+    @OneToMany(mappedBy = "multiple", cascade = CascadeType.REMOVE)
+    private List<MultipleChoice> multipleChoices;
 }

@@ -23,8 +23,8 @@ public class MemberController {
     private final MemberService memberService;
 
     // 아이디 중복 체크 메소드
-    @PostMapping("/{username}")
-    public ResponseEntity<String> checkIdPOST(@PathVariable String username){
+    @GetMapping("/{username}")
+    public ResponseEntity<String> checkIdGET(@PathVariable String username){
 
         if (memberService.checkIdDuplicate(username) == "exist"){
 

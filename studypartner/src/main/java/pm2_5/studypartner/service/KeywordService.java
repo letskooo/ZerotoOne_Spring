@@ -2,33 +2,21 @@ package pm2_5.studypartner.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 import pm2_5.studypartner.domain.Document;
 import pm2_5.studypartner.domain.Keyword;
-import pm2_5.studypartner.dto.document.DocTextTransReqDTO;
-import pm2_5.studypartner.dto.document.DocTextTransRespDTO;
+import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
-import pm2_5.studypartner.dto.keyword.OpenaiRespDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.repository.KeywordRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
 import pm2_5.studypartner.util.PapagoUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +30,11 @@ public class KeywordService {
     public final DocumentRepository documentRepository;
 
     // 키워드 등록
-    public KeywordsDTO registerKeyword(Long documentId) throws JsonProcessingException {
+    public KeywordsDTO registerKeywords(Long documentId) throws JsonProcessingException {
         
         // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
-        String translateText = findDocument.getContent();
+        String translatedText = findDocument.getEnContent();
 
         // 역할 설정
         String system = """
@@ -61,7 +49,7 @@ public class KeywordService {
                 """;
 
         // chat gpt의 응답을 추출
-        String json = openaiUtil.extractContent(system, translateText);
+        String json = openaiUtil.extractContent(system, translatedText);
 
         // chat gpt의 응답을 파싱
         ObjectMapper objectMapper = new ObjectMapper();
@@ -72,10 +60,10 @@ public class KeywordService {
         // 각 keyword를 확인 및 저장
         for(KeywordsDTO.KeywordDTO keyword : keywordsDTO.getKeywords()) {
             // 키워드와 설명 번역
-            DocTextTransReqDTO docTextTransReqDTO = new DocTextTransReqDTO(documentId, "en", "ko", keyword.getKeyword());
-            String translateKeyword = papagoUtil.translateText(docTextTransReqDTO);
-            docTextTransReqDTO.setText(keyword.getDescription());
-            String translateDesc = papagoUtil.translateText(docTextTransReqDTO);
+            TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getKeyword());
+            String translateKeyword = papagoUtil.translateText(textTransReqDTO);
+            textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getDescription());
+            String translateDesc = papagoUtil.translateText(textTransReqDTO);
             
             // 키워드 저장
             Keyword newKeyword = new Keyword(findDocument ,keyword.getKeyword() + "\n (" + translateKeyword + ")", translateDesc);
@@ -84,9 +72,34 @@ public class KeywordService {
             newKeywords.getKeywords().add(new KeywordsDTO.KeywordDTO(newKeyword.getKeyword(), newKeyword.getDescription()));
         }
 
+        newKeywords.setDocumentId(documentId);
         return newKeywords;
 
     }
 
+    // 키워드 자료 조회
+    public KeywordsDTO findKeywords(Long documentId){
+
+        List<Keyword> keywords = keywordRepository.findKeywordsByDocumentId(documentId);
+
+        KeywordsDTO keywordsDTO = new KeywordsDTO();
+        List<KeywordsDTO.KeywordDTO> keywordDTOList = new ArrayList<>();
+        int count = 0;
+        for(Keyword keyword : keywords){
+            keywordDTOList.add(new KeywordsDTO.KeywordDTO(keyword.getKeyword(), keyword.getDescription()));
+            count += 1;
+        }
+
+        keywordsDTO.setKeywords(keywordDTOList);
+        keywordsDTO.setCount(count);
+        keywordsDTO.setDocumentId(documentId);
+
+        return keywordsDTO;
+    }
+
+    // 키워드 자료 삭제
+    public void deleteKeywords (Long documentId){
+        keywordRepository.deleteKeywordsByDocumentId(documentId);
+    }
 
 }

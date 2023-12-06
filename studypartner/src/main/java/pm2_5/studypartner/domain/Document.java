@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -21,15 +24,33 @@ public class Document extends BaseEntity {      // 생성 문서
     @JoinColumn(name = "member_id")
     private Member member;
 
+    // 문서 제목
     private String title;
 
-    // 문서 내용
+    // 한글 문서 내용
     @Column(columnDefinition = "TEXT")
-    private String content;
+    private String koContent;
 
-    public Document(String title, Member member, String content) {
+    // 영어 문서 내용
+    @Column(columnDefinition = "TEXT")
+    private String enContent;
+
+    @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)
+    private List<Keyword> keywords = new ArrayList<>();
+
+    @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)
+    private List<Context> contexts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)
+    private List<Multiple> multiples = new ArrayList<>();
+
+    @OneToMany(mappedBy = "document", cascade = CascadeType.REMOVE)
+    private List<Written> writtens = new ArrayList<>();
+
+    public Document(String title, Member member, String koContent, String enContent) {
         this.title = title;
         this.member = member;
-        this.content = content;
+        this.koContent = koContent;
+        this.enContent = enContent;
     }
 }
