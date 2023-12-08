@@ -1,9 +1,13 @@
 package pm2_5.studypartner.controller;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import pm2_5.studypartner.dto.document.DocumentDTO;
+
+import pm2_5.studypartner.dto.document.MainScreenDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.service.DocumentService;
@@ -11,6 +15,7 @@ import pm2_5.studypartner.service.MemberService;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,8 +24,14 @@ import java.util.Map;
 @Slf4j
 public class DocumentController {
 
-    private final MemberService memberService;
     private final DocumentService documentService;
+
+    // 문서 내역 조회
+    @GetMapping("/{memberId}")
+    public MainScreenDTO getDocumentList(@PathVariable Long memberId){
+
+        return documentService.findDocumentList(memberId);
+    }
 
     // 텍스트를 이용하여 문서 생성
     @PostMapping("/text")

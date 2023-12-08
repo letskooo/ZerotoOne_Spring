@@ -12,18 +12,14 @@ import java.util.List;
 @NoArgsConstructor
 public class MainScreenDTO {
 
-    private Long memberId;
+    private String memberName;
     private int count;
-    private List<DocumentListDTO> documentList;
-
+    private List<DocumentListDTO> documents;
 
     @AllArgsConstructor
     @NoArgsConstructor
-    @Getter
     public static class DocumentListDTO {
-
         private String documentTitle;
         private LocalDate documentCreated;
-
     }
 }

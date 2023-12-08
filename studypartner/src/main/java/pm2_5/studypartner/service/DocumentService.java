@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import pm2_5.studypartner.domain.Document;
 import pm2_5.studypartner.domain.Member;
 import pm2_5.studypartner.dto.document.DocumentDTO;
-import pm2_5.studypartner.dto.document.DocumentListDTO;
+import pm2_5.studypartner.dto.document.MainScreenDTO;
 import pm2_5.studypartner.dto.document.TextRespDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
@@ -39,21 +39,13 @@ public class DocumentService {
 
         List<Document> findDocuments = documentRepository.findByMember(findMember);
 
-        List<DocumentListDTO> documentList = findDocuments.stream()
-                .map(document -> new DocumentListDTO(document.getTitle(),
+        List<MainScreenDTO.DocumentListDTO> documentList = findDocuments.stream()
+                .map(document -> new MainScreenDTO.DocumentListDTO(document.getTitle(),
                         document.getCreated().toLocalDate())).collect(Collectors.toList());
 
         log.info("================문서 내역 조회=================");
 
         return new MainScreenDTO(findMember.getName(), documentList.size(), documentList);
-    }
-
-    @AllArgsConstructor
-    static class MainScreenDTO {
-
-        String memberName;
-        int count;
-        List<DocumentListDTO> dtoList;
     }
 
     // 텍스트 번역 및 저장
