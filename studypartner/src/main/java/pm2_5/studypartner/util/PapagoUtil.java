@@ -1,5 +1,6 @@
 package pm2_5.studypartner.util;
 
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,9 @@ import pm2_5.studypartner.dto.papago.ImgTransRespDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransRespDTO;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,18 +79,29 @@ public class PapagoUtil {
 
         WebClient webClient = WebClient.create();
 
+        BufferedImage originalImage = ImageIO.read(imgTransReqDTO.getImage().getInputStream());
+        int newWidth = 100;
+        int newHeight = 100;
+        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
+        g.dispose();
+
+        // 조정된 이미지를 바이트 배열로 변환하여 요청 바디에 추가
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "png", baos);
+        byte[] resizedImageBytes = baos.toByteArray();
+
         // 요청 바디 설정
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-        // 이미지 파일을 바이트 배열로 변환하여 요청 바디에 추가
-            body.add("image",new ByteArrayResource(imgTransReqDTO.getImage().getBytes())
 
-        {
-            // 파일 이름이 필요할 시 사용
+        // 이미지 파일을 바이트 배열로 변환하여 요청 바디에 추가
+        body.add("image", new ByteArrayResource(resizedImageBytes) {
             @Override
-            public String getFilename () {
-            return imgTransReqDTO.getImage().getOriginalFilename();
-        }
+            public String getFilename() {
+                return imgTransReqDTO.getImage().getOriginalFilename();
+            }
         });
 
             body.add("source", imgTransReqDTO.getSource());
