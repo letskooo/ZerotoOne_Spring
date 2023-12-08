@@ -80,8 +80,8 @@ public class PapagoUtil {
         WebClient webClient = WebClient.create();
 
         BufferedImage originalImage = ImageIO.read(imgTransReqDTO.getImage().getInputStream());
-        int newWidth = 100;
-        int newHeight = 100;
+        int newWidth = 1900;
+        int newHeight = 900;
         BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
