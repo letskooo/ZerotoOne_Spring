@@ -40,7 +40,7 @@ public class DocumentService {
         List<Document> findDocuments = documentRepository.findByMember(findMember);
 
         List<MainScreenDTO.DocumentListDTO> documentList = findDocuments.stream()
-                .map(document -> new MainScreenDTO.DocumentListDTO(document.getTitle(),
+                .map(document -> new MainScreenDTO.DocumentListDTO(document.getId(), document.getTitle(),
                         document.getCreated().toLocalDate())).collect(Collectors.toList());
 
         log.info("================문서 내역 조회=================");

@@ -19,6 +19,7 @@ public class MainScreenDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class DocumentListDTO {
+        private Long documentId;
         private String documentTitle;
         private LocalDate documentCreated;
     }
