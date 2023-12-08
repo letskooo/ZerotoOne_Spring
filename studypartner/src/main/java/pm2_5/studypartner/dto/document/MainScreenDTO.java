@@ -18,6 +18,7 @@ public class MainScreenDTO {
 
     @AllArgsConstructor
     @NoArgsConstructor
+    @Getter
     public static class DocumentListDTO {
         private Long documentId;
         private String documentTitle;

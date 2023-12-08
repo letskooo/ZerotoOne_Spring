@@ -27,7 +27,7 @@ public class DocumentController {
     private final DocumentService documentService;
 
     // 문서 내역 조회
-    @GetMapping("/{memberId}")
+    @GetMapping("/mainPage/{memberId}")
     public MainScreenDTO getDocumentList(@PathVariable Long memberId){
 
         return documentService.findDocumentList(memberId);
