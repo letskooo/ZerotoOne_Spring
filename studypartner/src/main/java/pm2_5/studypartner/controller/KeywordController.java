@@ -8,6 +8,7 @@ import pm2_5.studypartner.domain.Keyword;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.service.KeywordService;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -18,25 +19,24 @@ public class KeywordController {
     private final KeywordService keywordService;
 
     // 키워드 생성 및 등록
-    @PostMapping("")
-    public KeywordsDTO addKeyword(@RequestBody Map<String, Long> request) throws JsonProcessingException {
-        Long documentId = request.get("documentId");
+    @PostMapping("/{documentId}")
+    public KeywordsDTO addKeyword(@PathVariable Long documentId) throws JsonProcessingException {
+
         return keywordService.registerKeywords(documentId);
     }
 
     // 키워드 조회
-    @GetMapping("")
-    public KeywordsDTO getKeywords(@RequestBody Map<String, Long> request) {
-        Long documentId = request.get("documentId");
+    @GetMapping("/{documentId}")
+    public KeywordsDTO getKeywords(@PathVariable Long documentId) {
+
         return keywordService.findKeywords(documentId);
     }
 
     // 키워드 삭제
-    @DeleteMapping("")
-    public Map<String, Long> removeKeywords(@RequestBody Map<String, Long> request) {
-        Long documentId = request.get("documentId");
-        keywordService.deleteKeywords(documentId);
-        return request;
-    }
+    @DeleteMapping("/{documentId}")
+    public Map<String, Long> removeKeywords(@PathVariable Long documentId) {
 
+        keywordService.deleteKeywords(documentId);
+        return Collections.singletonMap("documentId", documentId);
+    }
 }
