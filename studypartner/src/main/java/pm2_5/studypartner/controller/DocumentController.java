@@ -34,7 +34,7 @@ public class DocumentController {
     public Map<String, Long> addTransDoc(@ModelAttribute TextTransReqDTO textTransReqDTO){
 
         Map<String, Long> documentMap = new HashMap<>();
-        documentMap.put("documentId", documentService.registerTransDoc(textTransReqDTO));
+        documentMap.put("documentId", documentService.registerTextTransDoc(textTransReqDTO));
         return documentMap;
     }
 
