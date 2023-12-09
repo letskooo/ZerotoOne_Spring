@@ -1,5 +1,6 @@
 package pm2_5.studypartner.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class DocumentService {
     }
 
     // 텍스트 번역 및 저장
-    public Long registerTextTransDoc(TextTransReqDTO textTransReqDTO) {
+    public Long registerTextTransDoc(TextTransReqDTO textTransReqDTO) throws JsonProcessingException {
         
         Member findMember = memberRepository.findById(textTransReqDTO.getMemberId()).get();
 

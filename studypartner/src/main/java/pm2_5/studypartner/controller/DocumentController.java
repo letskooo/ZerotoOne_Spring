@@ -1,5 +1,6 @@
 package pm2_5.studypartner.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -32,7 +33,7 @@ public class DocumentController {
 
     // 텍스트를 이용하여 문서 생성
     @PostMapping("/text")
-    public Map<String, Long> addTransDoc(@ModelAttribute TextTransReqDTO textTransReqDTO){
+    public Map<String, Long> addTransDoc(@ModelAttribute TextTransReqDTO textTransReqDTO) throws JsonProcessingException {
 
         Map<String, Long> documentMap = new HashMap<>();
         documentMap.put("documentId", documentService.registerTextTransDoc(textTransReqDTO));

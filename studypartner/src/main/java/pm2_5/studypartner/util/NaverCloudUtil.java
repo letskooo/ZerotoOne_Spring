@@ -1,5 +1,6 @@
 package pm2_5.studypartner.util;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,7 +33,7 @@ public class NaverCloudUtil {
     @Value("${naver.ocr.secret.id}")
     private String secretKey;
 
-    public String translateText(TextTransReqDTO textTransReqDTO) {
+    public String translateText(TextTransReqDTO textTransReqDTO) throws JsonProcessingException {
 
         String escapedText = removeEscape(textTransReqDTO.getText());
         // 구두점 및 번역에 방해되는 특수문자 제거
@@ -42,27 +43,31 @@ public class NaverCloudUtil {
 
         headers.set("X-NCP-APIGW-API-KEY-ID", clientId);
         headers.set("X-NCP-APIGW-API-KEY", secretId);
-        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // 요청 바디 설정
-        String requestBody = String.format("source=%s&target=%s&text=%s",
-                textTransReqDTO.getSource(), textTransReqDTO.getTarget(), textTransReqDTO.getText());
+        PapagoReqDTO papagoReqDTO = new PapagoReqDTO(textTransReqDTO.getSource(), textTransReqDTO.getTarget(), textTransReqDTO.getText());
 
         // 요청 URL
         String apiUrl = "https://naveropenapi.apigw.ntruss.com/nmt/v1/translation";
 
         WebClient webClient = WebClient.create();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = "";
+
+        jsonString = objectMapper.writeValueAsString(papagoReqDTO);
+
         // 요청 및 응답
         TextTransRespDTO response = webClient.post()
                 .uri(apiUrl)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
-                .body(BodyInserters.fromValue(requestBody))
+                .body(BodyInserters.fromValue(jsonString))
                 .retrieve()
                 .bodyToMono(TextTransRespDTO.class)
                 .block();
 
         String translated = response.getMessage().getResult().getTranslatedText();
+
 
         return translated;
     }
@@ -125,6 +130,7 @@ public class NaverCloudUtil {
             }
         }
 
+        System.out.println(sb);
         return sb.toString();
     }
 
