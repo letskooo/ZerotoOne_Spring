@@ -19,10 +19,13 @@ public class Multiple extends BaseEntity {      // 객관식 문제
     @JoinColumn(name = "document_id")
     private Document document;
 
+    // 객관식 제목
+    private String title;
+
     // 객관식 문제
     private String question;
 
-    // 객관식 문제
+    // 객관식 답
     private int answer;
 
     // 중요도 체크

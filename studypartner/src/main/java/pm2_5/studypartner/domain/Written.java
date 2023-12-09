@@ -17,6 +17,9 @@ public class Written extends BaseEntity {      // 주관식 문제
     @JoinColumn(name = "document_id")
     private Document document;
 
+    // 주관식 제목
+    private String title;
+
     // 주관식 문제
     private String question;
 
