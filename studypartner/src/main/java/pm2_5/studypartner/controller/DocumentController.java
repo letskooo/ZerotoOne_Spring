@@ -3,6 +3,7 @@ package pm2_5.studypartner.controller;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import pm2_5.studypartner.dto.document.DocumentDTO;
@@ -27,11 +28,11 @@ public class DocumentController {
     private final DocumentService documentService;
 
     // 문서 내역 조회
-    @GetMapping("/{memberId}")
-    public MainScreenDTO getDocumentList(@PathVariable Long memberId){
-
-        return documentService.findDocumentList(memberId);
-    }
+//    @GetMapping("/{memberId}")
+//    public MainScreenDTO getDocumentList(@PathVariable Long memberId){
+//
+//        return documentService.findDocumentList(memberId);
+//    }
 
     // 텍스트를 이용하여 문서 생성
     @PostMapping("/text")
@@ -49,6 +50,11 @@ public class DocumentController {
         Map<String, Long> documentMap = new HashMap<>();
         documentMap.put("documentId", documentService.registerImgTransDoc(imgTransReqDTO));
         return documentMap;
+    }
+
+    @PostMapping(value = "/ocr", produces = MediaType.TEXT_PLAIN_VALUE + ";charset=UTF-8")
+    public String ocrTest(@ModelAttribute ImgTransReqDTO imgTransReqDTO) throws IOException {
+        return documentService.imgOCR(imgTransReqDTO);
     }
 
     // 문서 조회

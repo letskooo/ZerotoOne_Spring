@@ -13,7 +13,7 @@ import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.repository.KeywordRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
-import pm2_5.studypartner.util.PapagoUtil;
+import pm2_5.studypartner.util.NaverCloudUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class KeywordService {
 
-    public final PapagoUtil papagoUtil;
+    public final NaverCloudUtil naverCloudUtil;
     public final OpenaiUtil openaiUtil;
     public final KeywordRepository keywordRepository;
     public final DocumentRepository documentRepository;
@@ -61,9 +61,9 @@ public class KeywordService {
         for(KeywordsDTO.KeywordDTO keyword : keywordsDTO.getKeywords()) {
             // 키워드와 설명 번역
             TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getKeyword());
-            String translateKeyword = papagoUtil.translateText(textTransReqDTO);
+            String translateKeyword = naverCloudUtil.translateText(textTransReqDTO);
             textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", keyword.getDescription());
-            String translateDesc = papagoUtil.translateText(textTransReqDTO);
+            String translateDesc = naverCloudUtil.translateText(textTransReqDTO);
             
             // 키워드 저장
             Keyword newKeyword = new Keyword(findDocument ,keyword.getKeyword() + "\n (" + translateKeyword + ")", translateDesc);

@@ -8,14 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pm2_5.studypartner.domain.Context;
 import pm2_5.studypartner.domain.Document;
-import pm2_5.studypartner.domain.Keyword;
 import pm2_5.studypartner.dto.context.ContextsDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
-import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.repository.ContextRepository;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
-import pm2_5.studypartner.util.PapagoUtil;
+import pm2_5.studypartner.util.NaverCloudUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class ContextService {
 
-    public final PapagoUtil papagoUtil;
+    public final NaverCloudUtil naverCloudUtil;
     public final OpenaiUtil openaiUtil;
     public final ContextRepository contextRepository;
     public final DocumentRepository documentRepository;
@@ -76,9 +74,9 @@ public class ContextService {
         for(ContextsDTO.ContextDTO context : contextsDTO.getContexts()) {
             // 키워드와 설명 번역
             TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", context.getContent());
-            String translatedContent = papagoUtil.translateText(textTransReqDTO);
+            String translatedContent = naverCloudUtil.translateText(textTransReqDTO);
             textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", context.getSummary());
-            String translatedSummary = papagoUtil.translateText(textTransReqDTO);
+            String translatedSummary = naverCloudUtil.translateText(textTransReqDTO);
 
             // 키워드 저장
             Context newContext = new Context(findDocument, translatedContent, translatedSummary);
