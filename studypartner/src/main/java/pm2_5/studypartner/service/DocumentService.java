@@ -1,7 +1,6 @@
 package pm2_5.studypartner.service;
 
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,15 +8,13 @@ import pm2_5.studypartner.domain.Document;
 import pm2_5.studypartner.domain.Member;
 import pm2_5.studypartner.dto.document.DocumentDTO;
 import pm2_5.studypartner.dto.document.MainScreenDTO;
-import pm2_5.studypartner.dto.document.TextRespDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.repository.MemberRepository;
-import pm2_5.studypartner.util.PapagoUtil;
+import pm2_5.studypartner.util.NaverCloudUtil;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +27,7 @@ public class DocumentService {
     private final DocumentRepository documentRepository;
     private final MemberRepository memberRepository;
 
-    private final PapagoUtil papagoUtil;
+    private final NaverCloudUtil naverCloudUtil;
 
     // 문서 내역 조회
     public MainScreenDTO findDocumentList(Long memberId){
@@ -54,7 +51,7 @@ public class DocumentService {
         Member findMember = memberRepository.findById(textTransReqDTO.getMemberId()).get();
 
         // papago에게 text 번역 요청하여 번역된 텍스트 반환
-        String translatedText = papagoUtil.translateText(textTransReqDTO);
+        String translatedText = naverCloudUtil.translateText(textTransReqDTO);
 
         // 번역된 text 기반으로 자료 저장
         Document document = new Document(textTransReqDTO.getDocumentTitle(), findMember, textTransReqDTO.getText(), translatedText);
@@ -63,16 +60,8 @@ public class DocumentService {
         return document.getId();
     }
 
-    // 이미지 번역 및 저장
-    public Long registerImgTransDoc(ImgTransReqDTO imgTransReqDTO) throws IOException {
-        Member findMember = memberRepository.findById(imgTransReqDTO.getMemberId()).get();
-
-        TextRespDTO textRespDTO = papagoUtil.translateImg(imgTransReqDTO);
-
-        Document document = new Document(imgTransReqDTO.getDocumentTitle(), findMember, textRespDTO.getSourceText(), textRespDTO.getTargetText());
-        document = documentRepository.save(document);
-
-        return document.getId();
+    public String imgOCR(ImgTransReqDTO imgTransReqDTO) throws IOException {
+        return naverCloudUtil.extractText(imgTransReqDTO);
     }
 
     // 문서 조회
