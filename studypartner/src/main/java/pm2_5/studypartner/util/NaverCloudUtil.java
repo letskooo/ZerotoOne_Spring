@@ -3,7 +3,6 @@ package pm2_5.studypartner.util;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -11,11 +10,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import pm2_5.studypartner.dto.document.TextRespDTO;
 import pm2_5.studypartner.dto.papago.*;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,64 +67,6 @@ public class NaverCloudUtil {
         return translated;
     }
 
-    public TextRespDTO translateImg(ImgTransReqDTO imgTransReqDTO) throws IOException {
-        // 헤더 설정
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.set("X-NCP-APIGW-API-KEY-ID",clientId);
-        headers.set("X-NCP-APIGW-API-KEY",secretId);
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        // 요청 URL
-        String apiUrl = "https://naveropenapi.apigw.ntruss.com/image-to-text/v1/translate";
-
-        WebClient webClient = WebClient.create();
-
-        BufferedImage originalImage = ImageIO.read(imgTransReqDTO.getImage().getInputStream());
-        int newWidth = 1900;
-        int newHeight = 900;
-        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, newWidth, newHeight, null);
-        g.dispose();
-
-        // 조정된 이미지를 바이트 배열로 변환하여 요청 바디에 추가
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(resizedImage, "png", baos);
-        byte[] resizedImageBytes = baos.toByteArray();
-
-        // 요청 바디 설정
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
-
-        // 이미지 파일을 바이트 배열로 변환하여 요청 바디에 추가
-        body.add("image", new ByteArrayResource(resizedImageBytes) {
-            @Override
-            public String getFilename() {
-                return imgTransReqDTO.getImage().getOriginalFilename();
-            }
-        });
-
-            body.add("source", "en");
-            body.add("target", "ko");
-
-        // 요청 및 응답
-        ImgTransRespDTO response = webClient.post()
-                .uri(apiUrl)
-                .headers(httpHeaders -> httpHeaders.addAll(headers))
-                .body(BodyInserters.fromMultipartData(body))
-                .retrieve()
-                .bodyToMono(ImgTransRespDTO.class)
-                .block();
-
-        System.out.println(response.getData().getSourceText());
-
-        // 번역된 텍스트 특수문자 제거
-        String translated = removeEscape(response.getData().getTargetText());
-
-        return new TextRespDTO(response.getData().getSourceText(), translated);
-    }
-
     public String extractText(ImgTransReqDTO imgTransReqDTO) throws IOException {
 
         BufferedImage originalImage = ImageIO.read(imgTransReqDTO.getImage().getInputStream());
@@ -166,19 +105,19 @@ public class NaverCloudUtil {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
         // 요청 및 응답
-        ExtractTextRespDTO response = webClient.post()
+        ClovaRespDTO response = webClient.post()
                 .uri(apiUrl)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
                 .body(BodyInserters.fromValue(jsonString))
                 .retrieve()
-                .bodyToMono(ExtractTextRespDTO.class)
+                .bodyToMono(ClovaRespDTO.class)
                 .block();
 
-        List<ExtractTextRespDTO.Image> images = response.getImages();
+        List<ClovaRespDTO.Image> images = response.getImages();
 
         StringBuilder sb = new StringBuilder();
-        for(ExtractTextRespDTO.Image oneImage : images){
-            for(ExtractTextRespDTO.Image.Field field : oneImage.getFields()){
+        for(ClovaRespDTO.Image oneImage : images){
+            for(ClovaRespDTO.Image.Field field : oneImage.getFields()){
                 sb.append(field.getInferText()).append(" ");
                 if(field.isLineBreak()){
                     sb.append("\n");

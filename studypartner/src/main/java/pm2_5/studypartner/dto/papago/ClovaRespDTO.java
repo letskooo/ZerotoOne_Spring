@@ -1,7 +1,6 @@
 package pm2_5.studypartner.dto.papago;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ExtractTextRespDTO {
+public class ClovaRespDTO {
     private String version;
     private String requestId;
     private long timestamp;

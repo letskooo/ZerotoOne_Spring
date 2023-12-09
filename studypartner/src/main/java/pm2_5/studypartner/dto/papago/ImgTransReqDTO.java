@@ -12,5 +12,4 @@ public class ImgTransReqDTO {
     private String documentTitle;
     private Long memberId;
     private MultipartFile image;
-
 }

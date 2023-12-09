@@ -8,7 +8,6 @@ import pm2_5.studypartner.domain.Document;
 import pm2_5.studypartner.domain.Member;
 import pm2_5.studypartner.dto.document.DocumentDTO;
 import pm2_5.studypartner.dto.document.MainScreenDTO;
-import pm2_5.studypartner.dto.document.TextRespDTO;
 import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
@@ -56,18 +55,6 @@ public class DocumentService {
 
         // 번역된 text 기반으로 자료 저장
         Document document = new Document(textTransReqDTO.getDocumentTitle(), findMember, textTransReqDTO.getText(), translatedText);
-        document = documentRepository.save(document);
-
-        return document.getId();
-    }
-
-    // 이미지 번역 및 저장
-    public Long registerImgTransDoc(ImgTransReqDTO imgTransReqDTO) throws IOException {
-        Member findMember = memberRepository.findById(imgTransReqDTO.getMemberId()).get();
-
-        TextRespDTO textRespDTO = naverCloudUtil.translateImg(imgTransReqDTO);
-
-        Document document = new Document(imgTransReqDTO.getDocumentTitle(), findMember, textRespDTO.getSourceText(), textRespDTO.getTargetText());
         document = documentRepository.save(document);
 
         return document.getId();
