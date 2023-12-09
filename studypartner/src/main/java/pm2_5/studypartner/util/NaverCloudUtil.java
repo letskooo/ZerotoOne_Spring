@@ -1,7 +1,8 @@
 package pm2_5.studypartner.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -9,23 +10,27 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import pm2_5.studypartner.dto.document.TextRespDTO;
-import pm2_5.studypartner.dto.papago.ImgTransReqDTO;
-import pm2_5.studypartner.dto.papago.ImgTransRespDTO;
-import pm2_5.studypartner.dto.papago.TextTransReqDTO;
-import pm2_5.studypartner.dto.papago.TextTransRespDTO;
+import pm2_5.studypartner.dto.papago.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
-public class PapagoUtil {
+public class NaverCloudUtil {
     @Value("${naver.text.client.id}")
     private String clientId;
 
     @Value("${naver.text.secret.id}")
     private String secretId;
+
+    @Value("${naver.ocr.secret.id}")
+    private String secretKey;
 
     public String translateText(TextTransReqDTO textTransReqDTO) {
 
@@ -62,51 +67,65 @@ public class PapagoUtil {
         return translated;
     }
 
-    public TextRespDTO translateImg(ImgTransReqDTO imgTransReqDTO) throws IOException {
+    public String extractText(ImgTransReqDTO imgTransReqDTO) throws IOException {
+
+        BufferedImage originalImage = ImageIO.read(imgTransReqDTO.getImage().getInputStream());
+
+        // Create a new ByteArrayOutputStream
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        // Write the BufferedImage into the ByteArrayOutputStream as PNG
+        ImageIO.write(originalImage, "png", baos);
+
+        byte[] fileContent = baos.toByteArray();
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+
+        List<ClovaReqDTO.Image> imageList = new ArrayList<>();
+        ClovaReqDTO.Image image = new ClovaReqDTO.Image("png", encodedString, imgTransReqDTO.getDocumentTitle());
+        imageList.add(image);
+        ClovaReqDTO clovaReqDTO = new ClovaReqDTO("V2", imgTransReqDTO.getMemberId().toString(), System.currentTimeMillis(), "ko", imageList);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonString = "";
+
+        jsonString = objectMapper.writeValueAsString(clovaReqDTO);
+
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
-        headers.set("X-NCP-APIGW-API-KEY-ID",clientId);
-        headers.set("X-NCP-APIGW-API-KEY",secretId);
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.set("X-OCR-SECRET",secretKey);
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
         // 요청 URL
-        String apiUrl = "https://naveropenapi.apigw.ntruss.com/image-to-text/v1/translate";
+        String apiUrl = "https://jb4ae7jsws.apigw.ntruss.com/custom/v1/26820/8f422bf5361c5d844df513e0f54ca2190fedddc9829407b0ee1f46f14fc8ae7c/general";
 
         WebClient webClient = WebClient.create();
 
         // 요청 바디 설정
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
 
-        // 이미지 파일을 바이트 배열로 변환하여 요청 바디에 추가
-            body.add("image",new ByteArrayResource(imgTransReqDTO.getImage().getBytes())
-
-        {
-            // 파일 이름이 필요할 시 사용
-            @Override
-            public String getFilename () {
-            return imgTransReqDTO.getImage().getOriginalFilename();
-        }
-        });
-
-            body.add("source", imgTransReqDTO.getSource());
-            body.add("target", imgTransReqDTO.getTarget());
-
         // 요청 및 응답
-        ImgTransRespDTO response = webClient.post()
+        ClovaRespDTO response = webClient.post()
                 .uri(apiUrl)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
-                .body(BodyInserters.fromMultipartData(body))
+                .body(BodyInserters.fromValue(jsonString))
                 .retrieve()
-                .bodyToMono(ImgTransRespDTO.class)
+                .bodyToMono(ClovaRespDTO.class)
                 .block();
 
-        System.out.println(response.getData().getSourceText());
+        List<ClovaRespDTO.Image> images = response.getImages();
 
-        // 번역된 텍스트 특수문자 제거
-        String translated = removeEscape(response.getData().getTargetText());
+        StringBuilder sb = new StringBuilder();
+        for(ClovaRespDTO.Image oneImage : images){
+            for(ClovaRespDTO.Image.Field field : oneImage.getFields()){
+                sb.append(field.getInferText()).append(" ");
+                if(field.isLineBreak()){
+                    sb.append("\n");
+                }
+            }
+        }
 
-        return new TextRespDTO(response.getData().getSourceText(), translated);
+        return sb.toString();
     }
 
     public static String removeEscape(String input) {

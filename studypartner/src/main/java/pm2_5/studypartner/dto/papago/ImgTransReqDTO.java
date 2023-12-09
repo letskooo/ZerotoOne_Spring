@@ -11,8 +11,5 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImgTransReqDTO {
     private String documentTitle;
     private Long memberId;
-    private String source;
-    private String target;
     private MultipartFile image;
-
 }
