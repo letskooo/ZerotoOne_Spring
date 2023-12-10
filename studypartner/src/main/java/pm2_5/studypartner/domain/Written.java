@@ -26,6 +26,4 @@ public class Written extends BaseEntity {      // 주관식 문제
     // 주관식 답
     private String answer;
 
-    // 중요도 체크
-    private boolean checked;
 }
