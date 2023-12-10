@@ -22,7 +22,7 @@ public class OpenaiUtil {
     @Value("${openai.my_key}")
     private String chatkey;
 
-    public String extractContent(String system, String translatedText) throws JsonProcessingException {
+    public String extractContent(String system, String translatedText, boolean type) throws JsonProcessingException {
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
@@ -65,7 +65,12 @@ public class OpenaiUtil {
         StringBuilder sb = new StringBuilder();
         for(OpenaiRespDTO.Choice choice : openaiRespDTO.getChoices()) {
             String keywords = choice.getMessage().getContent();
-            String json = extractJson(keywords);
+            String json;
+            if(type){
+                json = extractList(keywords);
+            } else{
+                json = extractJson(keywords);
+            }
             System.out.println(json);
 
             sb.append(json);
@@ -76,6 +81,13 @@ public class OpenaiUtil {
     public static String extractJson(String input) {
         //JSON 스타일의 문자열 패턴을 정의합니다.
         String jsonStr = input.substring(input.indexOf("{"));
+
+        return jsonStr;
+    }
+
+    public static String extractList(String input) {
+        //JSON 스타일의 문자열 패턴을 정의합니다.
+        String jsonStr = input.substring(input.indexOf("["));
 
         return jsonStr;
     }
