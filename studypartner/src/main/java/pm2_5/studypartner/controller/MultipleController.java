@@ -29,8 +29,8 @@ public class MultipleController {
     }
 
     @GetMapping("/result")
-    public List<MultipleDTO> findAddResult(@RequestBody MultipleRespDTO multipleRespDTO){
-        return multipleService.findRegisteredMultiples(multipleRespDTO);
+    public List<MultipleDTO> findAddResult(@RequestParam Long documentId, @RequestParam List<Long> multipleIds){
+        return multipleService.findRegisteredMultiples(documentId, multipleIds);
     }
 
     @DeleteMapping("/result")

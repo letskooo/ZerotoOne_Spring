@@ -125,10 +125,10 @@ public class MultipleService {
         return new MultipleRespDTO(documentId, idList);
     }
 
-    public List<MultipleDTO> findRegisteredMultiples(MultipleRespDTO multipleRespDTO){
+    public List<MultipleDTO> findRegisteredMultiples(Long documentId, List<Long> multipleIds){
         List<MultipleDTO> multipleDTOList = new ArrayList<>();
-        for(Long i : multipleRespDTO.getMultipleIds()){
-            Multiple multiple = multipleRepository.findByDocumentIdAndId(multipleRespDTO.getDocumentId(), i);
+        for(Long i : multipleIds){
+            Multiple multiple = multipleRepository.findByDocumentIdAndId(documentId, i);
 
             List<MultipleDTO.ChoicesDTO> choicesDTOList = multiple.getMultipleChoices().stream()
                     .map(choice -> new MultipleDTO.ChoicesDTO(choice.getContent(), choice.getNumber(), choice.getAnswer()))
