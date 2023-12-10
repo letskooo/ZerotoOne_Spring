@@ -84,7 +84,7 @@ public class WrittenService {
                     ```
                 """;
 
-        // chat gpt의 응답을 추출
+        /*// chat gpt의 응답을 추출
         String json = openaiUtil.extractContent(system, translatedText, true);
 
         // chat gpt의 응답을 파싱
@@ -117,7 +117,8 @@ public class WrittenService {
         }
 
 
-        return new MultipleRespDTO(documentId, idList);
+        return new MultipleRespDTO(documentId, idList);*/
+        return new WrittenDTO();
     }
 
 }
