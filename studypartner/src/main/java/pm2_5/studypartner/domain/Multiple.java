@@ -30,16 +30,12 @@ public class Multiple extends BaseEntity {      // 객관식 문제
     // 객관식 문제
     private String question;
 
-    // 중요도 체크
-    private boolean checked;
-
     @OneToMany(mappedBy = "multiple", cascade = CascadeType.REMOVE)
     private List<MultipleChoice> multipleChoices;
 
-    public Multiple(Document document, String title, String question, boolean checked){
+    public Multiple(Document document, String title, String question){
         this.document = document;
         this.title = title;
         this.question = question;
-        this.checked = checked;
     }
 }

@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import pm2_5.studypartner.domain.Multiple;
 import pm2_5.studypartner.dto.Multiple.MultipleDTO;
+import pm2_5.studypartner.dto.Multiple.MultipleReqDTO;
 import pm2_5.studypartner.dto.Multiple.MultipleRespDTO;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.service.MultipleService;
@@ -45,8 +46,8 @@ public class MultipleController {
     }
 
     @DeleteMapping("")
-    public Map<String, Long> removeMultiple(@RequestParam Long documentId, @RequestParam Long multipleId){
-        multipleService.deleteMultiple(documentId, multipleId);
-        return Collections.singletonMap("documentId", documentId);
+    public Map<String, Long> removeMultiple(@RequestBody MultipleReqDTO multipleReqDTO){
+        multipleService.deleteMultiple(multipleReqDTO.getDocumentId(), multipleReqDTO.getMultipleId());
+        return Collections.singletonMap("documentId", multipleReqDTO.getDocumentId());
     }
 }
