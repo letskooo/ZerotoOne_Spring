@@ -106,7 +106,7 @@ public class MultipleService {
             textTransReqDTO.setText(multipleDTO.getQuestion());
             String translatedQuestion = naverCloudUtil.translateText(textTransReqDTO);
 
-            Multiple newMultiple = new Multiple(findDocument ,translateTitle, translatedQuestion, false);
+            Multiple newMultiple = new Multiple(findDocument ,translateTitle, translatedQuestion);
             newMultiple = multipleRepository.save(newMultiple);
             idList.add(newMultiple.getId());
 

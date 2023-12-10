@@ -28,14 +28,10 @@ public class Keyword extends BaseEntity {   // 키워드 추출
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    // 중요도 체크
-    private boolean checked;
-
     public Keyword(Document document, String keyword, String description)
     {
         this.document = document;
         this.keyword = keyword;
         this.description = description;
-        this.checked = false;
     }
 }
