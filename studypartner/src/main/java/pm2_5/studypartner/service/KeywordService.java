@@ -49,7 +49,7 @@ public class KeywordService {
                 """;
 
         // chat gpt의 응답을 추출
-        String json = openaiUtil.extractContent(system, translatedText);
+        String json = openaiUtil.extractContent(system, translatedText, false);
 
         // chat gpt의 응답을 파싱
         ObjectMapper objectMapper = new ObjectMapper();
