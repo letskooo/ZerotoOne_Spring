@@ -8,6 +8,7 @@ import pm2_5.studypartner.domain.Multiple;
 import pm2_5.studypartner.dto.Multiple.MultipleDTO;
 import pm2_5.studypartner.dto.Multiple.MultipleReqDTO;
 import pm2_5.studypartner.dto.Multiple.MultipleRespDTO;
+import pm2_5.studypartner.dto.Multiple.MultiplesFindDTO;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.service.MultipleService;
 
@@ -21,6 +22,12 @@ import java.util.Map;
 @Slf4j
 public class MultipleController {
     private final MultipleService multipleService;
+
+    @GetMapping("/{documentId}")
+    public List<MultiplesFindDTO> getMultipleList(@PathVariable Long documentId) {
+
+        return multipleService.findMultipleList(documentId);
+    }
 
     // 키워드 생성 및 등록
     @PostMapping("/{documentId}")

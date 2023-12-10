@@ -13,6 +13,7 @@ import pm2_5.studypartner.domain.Multiple;
 import pm2_5.studypartner.domain.MultipleChoice;
 import pm2_5.studypartner.dto.Multiple.MultipleDTO;
 import pm2_5.studypartner.dto.Multiple.MultipleRespDTO;
+import pm2_5.studypartner.dto.Multiple.MultiplesFindDTO;
 import pm2_5.studypartner.dto.document.MainScreenDTO;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
@@ -38,6 +39,19 @@ public class MultipleService {
     public final DocumentRepository documentRepository;
     public final MultipleRepository multipleRepository;
     public final MultipleChoiceRepository multipleChoiceRepository;
+
+    // 객관식 전체 조회
+    public List<MultiplesFindDTO> findMultipleList(Long documentId) {
+
+        List<Multiple> multiples = multipleRepository.findByDocumentId(documentId);
+
+        List<MultiplesFindDTO> multipleDTOList = multiples.stream()
+                .map(multiple -> new MultiplesFindDTO(multiple.getId(),
+                        multiple.getTitle(), multiple.getCreated().toLocalDate()))
+                .collect(Collectors.toList());
+
+        return multipleDTOList;
+    }
 
     // 키워드 등록
     public MultipleRespDTO registerMultiple(Long documentId) throws JsonProcessingException {
