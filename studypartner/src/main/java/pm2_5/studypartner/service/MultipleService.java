@@ -142,7 +142,7 @@ public class MultipleService {
     public List<MultipleDTO> findRegisteredMultiples(Long documentId, List<Long> multipleIds){
         List<MultipleDTO> multipleDTOList = new ArrayList<>();
         for(Long i : multipleIds){
-            Multiple multiple = multipleRepository.findByDocumentIdAndId(documentId, i);
+            Multiple multiple = multipleRepository.findById(i).get();
 
             List<MultipleDTO.ChoicesDTO> choicesDTOList = multiple.getMultipleChoices().stream()
                     .map(choice -> new MultipleDTO.ChoicesDTO(choice.getContent(), choice.getNumber(), choice.getAnswer()))
@@ -156,12 +156,12 @@ public class MultipleService {
 
     public void deleteRegisteredMultiples(MultipleRespDTO multipleRespDTO){
         for(Long i : multipleRespDTO.getMultipleIds()){
-            multipleRepository.deleteByDocumentIdAndId(multipleRespDTO.getDocumentId(), i);
+            multipleRepository.deleteById(i);
         }
     }
 
     public MultipleDTO findMultiple(Long documentId, Long multipleId){
-        Multiple multiple = multipleRepository.findByDocumentIdAndId(documentId, multipleId);
+        Multiple multiple = multipleRepository.findById(multipleId).get();
 
         List<MultipleDTO.ChoicesDTO> choicesDTOList = multiple.getMultipleChoices().stream()
                 .map(choice -> new MultipleDTO.ChoicesDTO(choice.getContent(), choice.getNumber(), choice.getAnswer()))
@@ -170,6 +170,6 @@ public class MultipleService {
     }
 
     public void deleteMultiple(Long documentId, Long multipleId){
-        multipleRepository.deleteByDocumentIdAndId(documentId, multipleId);
+        multipleRepository.deleteById(multipleId);
     }
 }
