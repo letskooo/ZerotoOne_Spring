@@ -8,10 +8,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pm2_5.studypartner.domain.Document;
+import pm2_5.studypartner.domain.Multiple;
 import pm2_5.studypartner.domain.Written;
+import pm2_5.studypartner.dto.multiple.MultiplesFindDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.dto.written.WrittenDTO;
 import pm2_5.studypartner.dto.written.WrittenRespDTO;
+import pm2_5.studypartner.dto.written.WrittensFindDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.repository.WrittenRepository;
 import pm2_5.studypartner.util.NaverCloudUtil;
@@ -31,6 +34,19 @@ public class WrittenService {
     public final OpenaiUtil openaiUtil;
     public final DocumentRepository documentRepository;
     public final WrittenRepository writtenRepository;
+
+    // 객관식 전체 조회
+    public List<WrittensFindDTO> findWrittenList(Long documentId) {
+
+        List<Written> writtens = writtenRepository.findByDocumentId(documentId);
+
+        List<WrittensFindDTO> writtenDTOList = writtens.stream()
+                .map(written -> new WrittensFindDTO(written.getId(),
+                        written.getTitle(), written.getCreated().toLocalDate()))
+                .collect(Collectors.toList());
+
+        return writtenDTOList;
+    }
 
     public WrittenRespDTO registerWritten(Long documentId) throws JsonProcessingException {
 
