@@ -5,11 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pm2_5.studypartner.domain.Document;
 import pm2_5.studypartner.domain.Keyword;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.dto.keyword.KeywordsDTO;
+import pm2_5.studypartner.error.ApiException;
 import pm2_5.studypartner.repository.DocumentRepository;
 import pm2_5.studypartner.repository.KeywordRepository;
 import pm2_5.studypartner.util.OpenaiUtil;
@@ -31,7 +34,13 @@ public class KeywordService {
 
     // 키워드 등록
     public KeywordsDTO registerKeywords(Long documentId) throws JsonProcessingException {
-        
+
+        List<Keyword> existingKeywords = keywordRepository.findKeywordsByDocumentId(documentId);
+
+        if (!existingKeywords.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 문서에 키워드가 이미 존재합니다!");
+        }
+
         // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
         String translatedText = findDocument.getEnContent();

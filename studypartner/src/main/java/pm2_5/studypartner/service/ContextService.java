@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import pm2_5.studypartner.domain.Context;
 import pm2_5.studypartner.domain.Document;
+import pm2_5.studypartner.domain.Keyword;
 import pm2_5.studypartner.dto.context.ContextsDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.repository.ContextRepository;
@@ -30,6 +33,15 @@ public class ContextService {
     public final DocumentRepository documentRepository;
 
     public ContextsDTO registerContext(Long documentId) throws JsonProcessingException {
+
+        // 이미 해당 documentId에 연관된 keyword가 있는지 확인
+        List<Context> existingContexts = contextRepository.findContextsByDocumentId(documentId);
+
+        if (!existingContexts.isEmpty()) {
+            // 이미 연관된 키워드가 있을 경우 Bad Request 반환
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "해당 문서에 문단 요약이 이미 존재합니다!");
+        }
+
         
         // 해당 자료를 가져옴
         Document findDocument = documentRepository.findById(documentId).get();
