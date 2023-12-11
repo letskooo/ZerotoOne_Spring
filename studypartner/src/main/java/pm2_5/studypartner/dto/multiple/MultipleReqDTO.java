@@ -1,9 +1,8 @@
-package pm2_5.studypartner.dto.Multiple;
+package pm2_5.studypartner.dto.multiple;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
