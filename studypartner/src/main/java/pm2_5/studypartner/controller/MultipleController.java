@@ -4,12 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import pm2_5.studypartner.domain.Multiple;
-import pm2_5.studypartner.dto.Multiple.MultipleDTO;
-import pm2_5.studypartner.dto.Multiple.MultipleReqDTO;
-import pm2_5.studypartner.dto.Multiple.MultipleRespDTO;
-import pm2_5.studypartner.dto.Multiple.MultiplesFindDTO;
-import pm2_5.studypartner.dto.keyword.KeywordsDTO;
+
+import pm2_5.studypartner.dto.multiple.MultipleDTO;
+import pm2_5.studypartner.dto.multiple.MultipleReqDTO;
+import pm2_5.studypartner.dto.multiple.MultipleRespDTO;
+import pm2_5.studypartner.dto.multiple.MultiplesFindDTO;
 import pm2_5.studypartner.service.MultipleService;
 
 import java.util.Collections;
