@@ -8,17 +8,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pm2_5.studypartner.domain.Document;
-import pm2_5.studypartner.domain.Keyword;
 import pm2_5.studypartner.domain.Multiple;
 import pm2_5.studypartner.domain.MultipleChoice;
-import pm2_5.studypartner.dto.Multiple.MultipleDTO;
-import pm2_5.studypartner.dto.Multiple.MultipleRespDTO;
-import pm2_5.studypartner.dto.Multiple.MultiplesFindDTO;
-import pm2_5.studypartner.dto.document.MainScreenDTO;
-import pm2_5.studypartner.dto.keyword.KeywordsDTO;
+import pm2_5.studypartner.dto.multiple.MultipleDTO;
+import pm2_5.studypartner.dto.multiple.MultipleRespDTO;
+import pm2_5.studypartner.dto.multiple.MultiplesFindDTO;
 import pm2_5.studypartner.dto.papago.TextTransReqDTO;
 import pm2_5.studypartner.repository.DocumentRepository;
-import pm2_5.studypartner.repository.KeywordRepository;
 import pm2_5.studypartner.repository.MultipleChoiceRepository;
 import pm2_5.studypartner.repository.MultipleRepository;
 import pm2_5.studypartner.util.NaverCloudUtil;
@@ -53,7 +49,7 @@ public class MultipleService {
         return multipleDTOList;
     }
 
-    // 키워드 등록
+    // 객관식 등록
     public MultipleRespDTO registerMultiple(Long documentId) throws JsonProcessingException {
 
         // 해당 자료를 가져옴
