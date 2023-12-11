@@ -59,44 +59,44 @@ public class MultipleService {
         // 역할 설정
         String system = """
                     You are to create a multiple choice question by extracting what is important from the material I send you.
-                     I'll tell you the steps, and you'll follow them.
-                     1. look at the material and select the concepts you think are important. This will have key title in JSON sentences.
-                     2. The purpose of the view is to test your knowledge of those concepts. Provide examples of concepts that might be confused with those concepts, or terms that you think are similar, as multiple choice questions. This will have key content in JSON sentences.
-                     3. Write a description of that question. For example, choose the wrong one, choose the right one, etc. If there are multiple correct answer choices, make sure to include the phrase Choose all of them in your description. This will have key question in JSON sentences.
-                     4. If there are any concepts left that you think are important, please create another problem.
-                     5. Provide the correct answer to the question. This will have key answer in JSON sentences.
-                     6. Please write JSON-style responses so that Jackson can paraphrase them by linking them with the summary. I'll show you an example of a response format in ```.
-                    ```
-                    [
-                        {
-                            "title": "Pix2pix structure and functioning",
-                            "question": "Pix2pix employs a unique structure in comparison to traditional GANs. Considering the given information, which of the following statements are true about the structure and functioning of the Pix2pix model?",
-                            "multipleChoices": [
-                                {
-                                    "content": "Pix2pix uses an input image and a ground truth image to generate its output.",
-                                    "number": 1
-                                    "answer": true
-                                },
-                                {
-                                    "content": "Pix2pix uses max pooling to reduce width and height on the base.",
-                                    "number": 2
-                                    "answer": false
-                                },
-                                {
-                                    "content": "Pix2pix uses a variant of ConvNet structure called U-Net for generating the output image.",
-                                    "number": 3
-                                    "answer": true
-                                },
-                                {
-                                    "content": "The encoder part of the Pix2pix model contains only 4 blocks.",
-                                    "number": 4
-                                    "answer": false
-                                }
-                            ]
-                        },
-                        // Add more JSON responses if needed
-                    ]
-                    ```
+                    I'll tell you the steps, and you'll follow them.
+                    1. look at the material and select a concept or keyword that you think is important.  This will have key title in JSON sentences.
+                    2. The purpose of the view is to test your knowledge of those concepts. Provide examples of concepts that might be confused with those concepts, or terms that you think are similar, as multiple choice questions. This will have key content in JSON sentences.
+                    3. Write a description of that question. For example, choose the wrong one, choose the right one, True or false questions are fine. etc. If there are multiple correct answer choices, make sure to include the phrase Choose all of them in your description. This will have key question in JSON sentences.
+                    4. If there are any concepts left that you think are important, please create another question.
+                    5. Provide the correct answer to the question. This will have key answer in JSON sentences.
+                    6. Please write JSON-style responses so that Jackson can paraphrase them by linking them with the summary. I'll show you an example of a response format in ```.
+                      ```
+                      [
+                          {
+                              "title": "Pix2pix structure",
+                              "question": "Pix2pix employs a unique structure in comparison to traditional GANs. Considering the given information, which of the following statements are true about the structure and functioning of the Pix2pix model?",
+                              "multipleChoices": [
+                                  {
+                                      "content": "Pix2pix uses an input image and a ground truth image to generate its output.",
+                                      "number": 1
+                                      "answer": true
+                                  },
+                                  {
+                                      "content": "Pix2pix uses max pooling to reduce width and height on the base.",
+                                      "number": 2
+                                      "answer": false
+                                  },
+                                  {
+                                      "content": "Pix2pix uses a variant of ConvNet structure called U-Net for generating the output image.",
+                                      "number": 3
+                                      "answer": true
+                                  },
+                                  {
+                                      "content": "The encoder part of the Pix2pix model contains only 4 blocks.",
+                                      "number": 4
+                                      "answer": false
+                                  }
+                              ]
+                          },
+                          // Add more JSON responses if needed
+                      ]
+                      ```
                 """;
 
         // chat gpt의 응답을 추출
@@ -110,7 +110,7 @@ public class MultipleService {
         for(MultipleDTO multipleDTO : responses){
             multipleDTO.setDocumentId(documentId);
 
-            TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", multipleDTO.getQuestion());
+            TextTransReqDTO textTransReqDTO = new TextTransReqDTO(documentId, "en", "ko", multipleDTO.getTitle());
             String translateTitle = naverCloudUtil.translateText(textTransReqDTO);
 
             textTransReqDTO.setText(multipleDTO.getQuestion());
