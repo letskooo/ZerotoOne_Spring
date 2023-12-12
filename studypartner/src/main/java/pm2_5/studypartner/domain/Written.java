@@ -28,6 +28,7 @@ public class Written extends BaseEntity {      // 주관식 문제
     private String question;
 
     // 주관식 답
+    @Column(columnDefinition = "TEXT")
     private String answer;
 
     public Written(Document document, String title, String question, String answer){

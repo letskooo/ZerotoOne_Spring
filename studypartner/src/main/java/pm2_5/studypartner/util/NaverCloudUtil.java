@@ -35,9 +35,6 @@ public class NaverCloudUtil {
 
     public String translateText(TextTransReqDTO textTransReqDTO) throws JsonProcessingException {
 
-        String escapedText = removeEscape(textTransReqDTO.getText());
-        // 구두점 및 번역에 방해되는 특수문자 제거
-
         // 헤더 설정
         HttpHeaders headers = new HttpHeaders();
 
@@ -130,7 +127,6 @@ public class NaverCloudUtil {
             }
         }
 
-        System.out.println(sb);
         return sb.toString();
     }
 
