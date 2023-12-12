@@ -55,8 +55,6 @@ public class OpenaiUtil {
                 .bodyToMono(String.class)
                 .block();
 
-        System.out.println(response);
-
         // JSON 매핑
         ObjectMapper objectMapper = new ObjectMapper();
         OpenaiRespDTO openaiRespDTO = objectMapper.readValue(response, OpenaiRespDTO.class);
@@ -71,7 +69,6 @@ public class OpenaiUtil {
             } else{
                 json = extractJson(keywords);
             }
-            System.out.println(json);
 
             sb.append(json);
         }
