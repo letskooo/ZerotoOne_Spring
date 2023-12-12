@@ -49,9 +49,9 @@ public class KeywordService {
         String system = """
                 You need to extract important keywords and descriptions of those keywords based on the material I've given you.
                 I'll give you the steps, and you'll follow them to extract the keywords and descriptions.
-                1. Go through the material I've given you and extract the keywords you think are important.
-                2. generate the descriptions for those keywords from the source material.
-                3. count the number of keywords and let me know key count
+                1. Go through the material I've given you and extract the keywords you think are important. This will have a key keyword in JSON sentence
+                2. generate the descriptions for those keywords from the source material. This will have a key description in JSON sentence
+                3. count the number of keywords. This will have a key count in JSON sentence
                 4. pair those keywords with their descriptions and get back to me only a JSON style response that jackson can parse. I'll give you an example response format in ```.
                 
                 ```{"count" : 2, "keywords" : [{"keyword":"key", "description":"desc"},{"keyword":"key", "description":"desc"}]}```

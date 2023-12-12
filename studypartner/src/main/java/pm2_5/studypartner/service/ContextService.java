@@ -74,12 +74,10 @@ public class ContextService {
 
         // chat gpt의 응답을 추출
         String json = openaiUtil.extractContent(system, translatedText, false);
-        System.out.println(json);
         // chat gpt의 응답을 파싱
         ObjectMapper objectMapper = new ObjectMapper();
         ContextsDTO contextsDTO = objectMapper.readValue(json, ContextsDTO.class);
 
-        System.out.println(contextsDTO);
         ContextsDTO newContexts = new ContextsDTO(contextsDTO.getCount());
 
         // 각 keyword를 확인 및 저장
