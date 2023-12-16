@@ -57,6 +57,9 @@ public class OpenaiRespDTO {
         @JsonProperty("finish_reason")
         private String finishReason;
 
+        @JsonProperty("logprobs")
+        private String logprobs;
+
         @JsonProperty("index")
         private int index;
 
