@@ -22,7 +22,7 @@ public class WrittenController {
     private final WrittenService writtenService;
 
     @GetMapping("/{documentId}")
-    public List<WrittensFindDTO> getMultipleList(@PathVariable Long documentId) {
+    public List<WrittensFindDTO> getWrittenList(@PathVariable Long documentId) {
 
         return writtenService.findWrittenList(documentId);
     }
@@ -46,12 +46,12 @@ public class WrittenController {
     }
 
     @GetMapping("")
-    public WrittenDTO findMultiple(@RequestParam Long documentId, @RequestParam Long writtenId){
+    public WrittenDTO findWritten(@RequestParam Long documentId, @RequestParam Long writtenId){
         return writtenService.findWritten(documentId, writtenId);
     }
 
     @DeleteMapping("")
-    public Map<String, Long> removeMultiple(@RequestBody WrittenReqDTO writtenReqDTO){
+    public Map<String, Long> removeWritten(@RequestBody WrittenReqDTO writtenReqDTO){
         writtenService.deleteWritten(writtenReqDTO.getDocumentId(), writtenReqDTO.getWrittenId());
         return Collections.singletonMap("documentId", writtenReqDTO.getDocumentId());
     }
