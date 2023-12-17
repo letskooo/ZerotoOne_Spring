@@ -51,7 +51,7 @@ public class ContextService {
         String system = """
                 I need to provide a summary of the paragraphs from the data I provided.
                 I'll tell you the steps, so follow them.
-                1. Look at the data and divide the paragraphs that change the flow of the text. This will have key content in JSON sentences.
+                1. Break up your paragraphs when the topic shifts, even if you're talking about the same thing. You should have a paragraph per sentence to summarize, and each paragraph will have a key sentence from the JSON sentence.
                 2. Create a summary of each paragraph. This will have a key summary in JSON sentence
                 3. Count the number of paragraphs and let me know the number of paragraphs
                 4. Please write JSON-style responses so that Jackson can paraphrase them by linking them with the summary. I'll show you an example of a response format in ```.

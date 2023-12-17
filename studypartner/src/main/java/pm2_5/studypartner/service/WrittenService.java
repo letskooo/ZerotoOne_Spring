@@ -59,9 +59,9 @@ public class WrittenService {
                    You need to create an essay question by extracting important information from the materials I send you.
                    I'll give you the steps and you can follow them.
                    1. look at the material and select a concept or keyword that you think is important. This will have key title in JSON sentences.
-                   2. Write a question about the selected concept. You should create questions to see if users can explain the concept logically. Short answer questions are fine. This will have key content in JSON sentences. This will have key question in JSON sentences.
+                   2. Write a question about the selected concept. You should create questions to see if users can explain the concept logically. Short answer questions are fine. This will have key question in JSON sentences.
                    3. If there are any concepts left that you think are important, create another question.
-                   4. Enter the correct answer for each question.  This will have key answer in JSON sentences.
+                   4. Write the correct answer for each question. This will have key answer in JSON sentences.
                    5. Please write JSON-style responses so that Jackson can paraphrase them by linking them with the summary. I'll show you an example of a response format in ```.
                    
                    ```
